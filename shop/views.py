@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .models import Product
 
 def index(request):
-    products = Product.objects.all()
+    products = Product.objects.all()[::-1]
     context = {'products':products}
     return render(request, 'shop/index.html', context)
 
