@@ -2,8 +2,8 @@ from django.db import models
 
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
-    cate = models.CharField(max_length=50, default="")
-    subcate = models.CharField(max_length=50, default="")
+    cate = models.CharField(max_length=50, default="", blank=True)
+    subcate = models.CharField(max_length=50, default="", blank=True)
     img = models.ImageField(upload_to='shop/images',default="")
     price = models.CharField(max_length=20, default="")
     desc = models.TextField(max_length=1000, blank=True)

@@ -1,10 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Product
+from math import ceil
 
-def index(request):
-    products = Product.objects.all()[::-1]
-    context = {'products':products}
+def index(request):    
+    allProd = []
+    cateprod = Product.objects.values('cate','id')
+    cates = {item['cate'] for item in cateprod}
+    for cate in cates:
+        prod = Product.objects.filter(cate=cate)
+        n = len(prod)
+        nSlides = n//4 + ceil((n/4) - (n//4))
+        allProd.append([prod, range(1,nSlides), nSlides])
+    context = {'allProd':allProd}            
     return render(request, 'shop/index.html', context)
 
 def about(request):
