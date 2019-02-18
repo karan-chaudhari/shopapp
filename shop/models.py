@@ -1,5 +1,14 @@
 from django.db import models
 
+class Contact(models.Model):
+    name = models.CharField(max_length=80)
+    email = models.EmailField(max_length=80)
+    phone = models.CharField(max_length=15)
+    msg = models.TextField(max_length=500)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     product_name = models.CharField(max_length=50)
     cate = models.CharField(max_length=50, default="", blank=True)
