@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import Product, Contact
+from .models import Product, Contact, Feature_Product
 from math import ceil
 
 def index(request):    
+    feat_prods = Feature_Product.objects.all()[::-1]
     allProd = []
     cateprod = Product.objects.values('cate','id')
     cates = {item['cate'] for item in cateprod}
@@ -13,11 +14,11 @@ def index(request):
         n = len(prod)
         nSlides = n//4 + ceil((n/4) - (n//4))
         allProd.append([prod, range(1,nSlides), nSlides])
-    context = {'allProd':allProd}            
+    context = {'allProd':allProd, 'feat_prods':feat_prods}            
     return render(request, 'shop/index.html', context)
 
 def about(request):
-    return HttpResponse('About Shop')
+    return render(request, 'shop/about.html')
 
 def contact(request):
     if request.method == "POST":

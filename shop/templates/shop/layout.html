@@ -74,12 +74,28 @@
         <!-- menu -->
         <ul class="main-menu">
           <li><a href="/shop/">Home</a></li>
-          <li><a href="#">Women</a></li>
-          <li><a href="#">Men</a></li>
-          <li><a href="#">Jewelry
+          <li><a href="#">Women</a>
+            <ul class="sub-menu">
+              <li><a href="#">Tops</a></li>
+              <li><a href="#">Jumpsuits</a></li>
+              <li><a href="#">Lingerie</a></li>
+              <li><a href="#">Jeans</a></li>
+              <li><a href="#">Dresses</a></li>
+              <li><a href="#">Coats</a></li>
+              <li><a href="#">Jumpers</a></li>
+              <li><a href="#">Leggings</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Men</a>
+            <ul class="sub-menu">
+              <li><a href="#">Jeans</a></li>
+              <li><a href="#">Jackets</a></li>
+              <li><a href="#">T Shirts</a></li>
+             </ul>
+          </li>
+          <li><a href="#">Shoes
             <span class="new">New</span>
-          </a></li>
-          <li><a href="#">Shoes</a>
+            </a>
             <ul class="sub-menu">
               <li><a href="#">Sneakers</a></li>
               <li><a href="#">Sandals</a></li>
@@ -94,11 +110,11 @@
               <li><a href="./category.html">Category Page</a></li>
               <li><a href="./cart.html">Cart Page</a></li>
               <li><a href="./checkout.html">Checkout Page</a></li>
-              <li><a href="./checkout.html">About Page</a></li>
-              <li><a href="/shop/contact/">Contact Page</a></li>
             </ul>
           </li>
           <li><a href="#">Blog</a></li>
+          <li><a href="/shop/about/">About</a></li>
+          <li><a href="/shop/contact/">Contact</a></li>
         </ul>
       </div>
     </nav>
@@ -106,7 +122,6 @@
   <!-- Header section end -->
   {% block content %}
 
-Hello
   {% endblock %}
   <!-- Footer section -->
   <section class="footer-section my-4">
@@ -118,7 +133,7 @@ Hello
         <div class="col-lg-3 col-sm-6">
           <div class="footer-widget about-widget">
             <h2>About</h2>
-            <p>Donec vitae purus nunc. Morbi faucibus erat sit amet congue mattis. Nullam frin-gilla faucibus urna, id dapibus erat iaculis ut. Integer ac sem.</p>
+            <p>Divisima is an Indian fashion e-commerce company headquartered in Bengaluru, Karnataka, India. The company was founded in 2019 to sell personalized gift items.</p>
             <img src="{% static 'img/cards.png' %}" alt="">
           </div>
         </div>
@@ -126,14 +141,15 @@ Hello
           <div class="footer-widget about-widget">
             <h2>Page</h2>
             <ul>
-              <li><a href="">About Us</a></li>
+              <li><a href="/shop/about/">About Us</a></li>
+              <li><a href="/shop/contact/">Contact Us</a></li>
               <li><a href="">Track Orders</a></li>
               <li><a href="">Returns</a></li>
               <li><a href="">Jobs</a></li>
               <li><a href="">Shipping</a></li>
-              <li><a href="">Blog</a></li>
             </ul>
             <ul>
+              <li><a href="">Blog</a></li>
               <li><a href="">Partners</a></li>
               <li><a href="">Bloggers</a></li>
               <li><a href="">Support</a></li>
@@ -170,19 +186,19 @@ Hello
             <h2>Contact</h2>
             <div class="con-info">
               <span>C.</span>
-              <p>Your Company Ltd </p>
+              <p>Divisima Pvt Ltd </p>
             </div>
             <div class="con-info">
-              <span>B.</span>
-              <p>1481 Creekside Lane  Avila Beach, CA 93424, P.O. BOX 68 </p>
+              <span>A.</span>
+              <p>89, Nilkamal Society, Naroda, Ahmedabad</p>
             </div>
             <div class="con-info">
               <span>T.</span>
-              <p>+53 345 7953 32453</p>
+              <p>+546 990221 123</p>
             </div>
             <div class="con-info">
               <span>E.</span>
-              <p>office@youremail.com</p>
+              <p>divisima@contact.com</p>
             </div>
           </div>
         </div>
