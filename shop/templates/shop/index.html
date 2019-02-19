@@ -18,7 +18,7 @@
                 <h2>{{prod.price}}</h2>
               </div>
               <a href="#" class="site-btn sb-line">DISCOVER</a>
-              <a href="#" class="site-btn sb-white">ADD TO CART</a>
+              <button id="pr{{prod.id}}" class="site-btn sb-white cart">ADD TO CART</button>
             </div>
           </div>
         </div>
@@ -30,8 +30,6 @@
     </div>
   </section>
   <!-- Hero section end -->
-
-
 
   <!-- Features section -->
   <section class="features-section">
@@ -79,7 +77,8 @@
           <div class="pi-pic">
             <img src="{{product.img.url}}">
             <div class="pi-links">
-              <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+              <a id="pr{{product.id}}" class="add-card cart"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+
               <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
             </div>
           </div>
@@ -97,3 +96,30 @@
   </div>
   </section>    
 {% endblock content %}  
+
+{% block js %}
+  <script type="text/javascript">
+    console.log('working');
+    if(localStorage.getItem('cart') == null)
+    {
+      var cart = {};
+    }
+    else
+    {
+      cart = JSON.parse(localStorage.getItem('cart'));
+    }
+    $('.cart').click(function(){
+      console.log('clicked');
+      var idstr = this.id.toString();
+      console.log(idstr);
+      if (cart[idstr] != undefined){
+        cart[idstr] = cart[idstr] + 1;
+      }
+      else{
+        cart[idstr] = 1;
+      }
+      console.log(cart);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    });
+  </script>
+{% endblock %}
