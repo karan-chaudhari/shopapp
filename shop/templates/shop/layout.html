@@ -11,6 +11,8 @@
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
 
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
@@ -60,9 +62,9 @@
               <div class="up-item">
                 <div class="shopping-card">
                   <i class="flaticon-bag"></i>
-                  <span>1</span>
+                  <span id="cart">0</span>
                 </div>
-                <a href="#">Shopping Cart</a>
+                <a href="#" id="popcart" data-toggle="popover" data-container="body" data-html="true" data-placement="bottom">Shopping Cart</a>
               </div>
             </div>
           </div>
@@ -117,7 +119,7 @@
           <li><a href="/shop/contact/">Contact</a></li>
         </ul>
       </div>
-    </nav>
+    </nav> 
   </header>
   <!-- Header section end -->
   {% block content %}
@@ -236,6 +238,9 @@
   <script src="{% static 'js/jquery.zoom.min.js' %}"></script>
   <script src="{% static 'js/jquery-ui.min.js' %}"></script>
   <script src="{% static 'js/main.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
   {% block js %} {% endblock %}
   </body>
 </html>
