@@ -31,8 +31,16 @@ def contact(request):
         messages.success(request, 'Your details has been submitted. We will response you very soon. Thank you so much.')
     return render(request, 'shop/contact.html') 
 
-def productView(request):
-    return HttpResponse('Our Products')
+def product(request, myid):
+    fprod = Feature_Product.objects.filter(id=myid)
+    product = Product.objects.filter(id=myid)
+    context = {'product':product[0]}
+    return render(request, 'shop/product.html', context)
+
+def fea_product(request, myid):
+    fprod = Feature_Product.objects.filter(id=myid)
+    context = {'fprod':fprod[0]}
+    return render(request, 'shop/product.html', context)
 
 def tracker(request):
     return HttpResponse('Tracker')

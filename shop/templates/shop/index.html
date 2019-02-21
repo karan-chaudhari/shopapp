@@ -1,6 +1,6 @@
 {% extends 'shop/layout.html' %}
 {% load static %}
-{% block title %}Divisima{% endblock title %}
+{% block title %}Divisima{% endblock %}
 {% block content %}
   <!-- Hero section -->
   <section class="hero-section">
@@ -17,7 +17,7 @@
                 <span>from</span>
                 <h2>{{prod.price}}</h2>
               </div>
-              <a href="#" class="site-btn sb-line">DISCOVER</a>
+              <a href="/shop/fea-product/{{prod.id}}" class="site-btn sb-line">DISCOVER</a>
               <button id="pr{{prod.id}}" class="site-btn sb-white cart">ADD TO CART</button>
             </div>
           </div>
@@ -75,16 +75,14 @@
         <div class="product-item">
 
           <div class="pi-pic">
-            <img src="{{product.img.url}}">
+            <a href="/shop/product/{{product.id}}"><div><img src="{{product.img.url}}"></div></a>
             <div class="pi-links">
               <a id="pr{{product.id}}" class="add-card cart"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-
-              <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
             </div>
           </div>
           <div class="pi-text">
             <h6>{{product.price}}</h6>
-            <p>{{product.product_name}} </p>
+            <a href="/shop/product/{{product.id}}">{{product.product_name}}</a>
           </div>
         </div>
         {% endfor %}
@@ -96,35 +94,3 @@
   </div>
   </section>    
 {% endblock content %}  
-
-{% block js %}
-  <script type="text/javascript">
-    console.log('working');
-    if(localStorage.getItem('cart') == null)
-    {
-      var cart = {};
-    }
-    else
-    {
-      cart = JSON.parse(localStorage.getItem('cart'));
-      document.getElementById('cart').innerHTML = Object.keys(cart).length;
-    }
-    $('.cart').click(function(){
-      console.log('clicked');
-      var idstr = this.id.toString();
-      console.log(idstr);
-      if (cart[idstr] != undefined){
-        cart[idstr] = cart[idstr] + 1;
-      }
-      else{
-        cart[idstr] = 1;
-      }
-      console.log(cart);
-      localStorage.setItem('cart', JSON.stringify(cart));
-      document.getElementById('cart').innerHTML = Object.keys(cart).length;
-    });
-    $('#popcart').popover();
-    document.getElementById('popcart').setAttribute('data-content','<h5>Cart</h5>');
-
-  </script>
-{% endblock %}
