@@ -12,13 +12,12 @@
             <div class="col-xl-6 col-lg-7 text-white">
               <span>NEW ARRIVALS</span>
               <h2>{{prod.product_name}}</h2>
-              <p>{{prod.desc}}</p>
+              <p>{{prod.desc|slice:"0:125"}}....</p>
               <div class="text-white">
                 <span>from</span>
                 <h2>{{prod.price}}</h2>
               </div>
               <a href="/shop/fea-product/{{prod.id}}" class="site-btn sb-line">DISCOVER</a>
-              <button id="pr{{prod.id}}" class="site-btn sb-white cart">ADD TO CART</button>
             </div>
           </div>
         </div>
@@ -67,23 +66,20 @@
     <div class="container">     
       <div class="section-title">
       {% for products, range, nSlides in allProd %}
-
       </div>
       <h2 class="section-title">LATEST {{products.0.cate.upper}} PRODUCTS</h2>
       <div class="product-slider owl-carousel">  
         {% for product in products %} 
         <div class="product-item">
-
           <div class="pi-pic">
             <a href="/shop/product/{{product.id}}"><div><img src="{{product.img.url}}"></div></a>
-            <div class="pi-links">
-              <a id="pr{{product.id}}" class="add-card cart"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-            </div>
           </div>
           <div class="pi-text">
             <h6>{{product.price}}</h6>
             <a href="/shop/product/{{product.id}}">{{product.product_name}}</a>
           </div>
+          <button id="pr{{product.id}}" class="site-btn cart">ADD TO CART</button>
+          <pre>
         </div>
         {% endfor %}
         {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}

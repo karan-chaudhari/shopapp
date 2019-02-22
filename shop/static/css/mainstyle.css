@@ -133,7 +133,7 @@ ol {
 	padding: 18px 47px 14px;
 	border-radius: 50px;
 	text-transform: uppercase;
-	background: #f51167;
+	background: #007bff;
 	color: #fff;
 	line-height: normal;
 	cursor: pointer;
@@ -317,7 +317,7 @@ ol {
 	font-size: 12px;
 	font-weight: 700;
 	text-transform: uppercase;
-	color: #f51167;
+	color: #007bff;
 }
 
 .accordion-area .panel-body img {
@@ -400,7 +400,7 @@ ol {
 	min-width: 16px;
 	color: #fff;
 	font-size: 13px;
-	background: #f51167;
+	background: #007bff;
 	text-align: center;
 	border-radius: 30px;
 	padding: 0 2px;
@@ -440,7 +440,7 @@ ol {
 	font-size: 10px;
 	font-weight: 700;
 	color: #fff;
-	background: #f51167;
+	background: #007bff;
 	line-height: 1;
 	text-transform: uppercase;
 	left: calc(50% - 21px);
@@ -456,7 +456,7 @@ ol {
 }
 
 .main-menu li:hover>a {
-	color: #f51167;
+	color: #007bff;
 }
 
 .main-menu .sub-menu {
@@ -490,7 +490,7 @@ ol {
 }
 
 .main-menu .sub-menu li a:hover {
-	color: #f51167;
+	color: #007bff;
 }
 
 .nav-switch {
@@ -563,7 +563,7 @@ ol {
 	width: 162px;
 	height: 162px;
 	border-radius: 50%;
-	background: #f51167;
+	background: #007bff;
 	text-align: center;
 	padding-top: 20px;
 	-webkit-transform: rotate(45deg);
@@ -743,7 +743,7 @@ ol {
 }
 
 .feature:nth-child(2) {
-	background: #f51167;
+	background: #007bff;
 }
 
 .feature:nth-child(2) h2 {
@@ -781,8 +781,8 @@ ol {
 ------------------------*/
 
 .top-letest-product-section {
-	padding-top: 70px;
-	padding-bottom: 60px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 .top-letest-product-section .section-title {
@@ -838,7 +838,7 @@ ol {
 	text-align: center;
 	padding: 5px 0px 1px;
 	min-width: 65px;
-	background: #f51167;
+	background: #007bff;
 }
 
 .product-item .pi-links {
@@ -1114,12 +1114,12 @@ ol {
 
 .fw-latest-post-widget .lp-content .readmore {
 	font-size: 12px;
-	color: #f51167;
+	color: #007bff;
 }
 
 .contact-widget .con-info span {
 	float: left;
-	color: #f51167;
+	color: #007bff;
 	margin-right: 15px;
 	overflow: hidden;
 }
@@ -1264,16 +1264,16 @@ ol {
 	height: 9px;
 	left: 0;
 	top: 13px;
-	border: 1px solid #f51167;
+	border: 1px solid #007bff;
 	border-radius: 50%;
 }
 
 .category-menu li a:hover {
-	color: #f51167;
+	color: #007bff;
 }
 
 .category-menu li a:hover:after {
-	background: #f51167;
+	background: #007bff;
 }
 
 .category-menu li a:last-child a {
@@ -1299,7 +1299,7 @@ ol {
 }
 
 .category-menu li:hover>a {
-	color: #f51167;
+	color: #007bff;
 }
 
 .category-menu li.active>.sub-menu {
@@ -1450,8 +1450,8 @@ ol {
 }
 
 .fw-color-choose input[type=radio]:checked+label {
-	-webkit-box-shadow: 0 0 0 2px #f51167;
-	box-shadow: 0 0 0 2px #f51167;
+	-webkit-box-shadow: 0 0 0 2px #007bff;
+	box-shadow: 0 0 0 2px #007bff;
 }
 
 .fw-color-choose input[type=radio]:checked+label span {
@@ -1483,7 +1483,7 @@ ol {
 }
 
 .fw-size-choose input[type=radio]:checked+label {
-	background: #f51167;
+	background: #007bff;
 	color: #fff;
 }
 
@@ -1534,7 +1534,7 @@ ol {
 	height: 100%;
 	left: 0;
 	top: 0;
-	border: 2px solid #f51167;
+	border: 2px solid #007bff;
 	z-index: 1;
 }
 
@@ -1562,7 +1562,7 @@ ol {
 }
 
 .product-details .p-stock span {
-	color: #f51167;
+	color: #007bff;
 }
 
 .product-details .p-rating {
@@ -1570,7 +1570,7 @@ ol {
 }
 
 .product-details .p-rating i {
-	color: #f51167;
+	color: #007bff;
 }
 
 .product-details .p-rating i.fa-fade {
@@ -1616,7 +1616,7 @@ ol {
 }
 
 .product-details .fw-size-choose input[type=radio]:checked+label {
-	border: 2px solid #f51167;
+	border: 2px solid #007bff;
 }
 
 .product-details .fw-size-choose .disable label {
@@ -1842,7 +1842,7 @@ ol {
 }
 
 .cart-table .total-cost {
-	background: #f51167;
+	background: #007bff;
 	margin: 0 -34px;
 	text-align: right;
 	padding: 22px 0;
@@ -1892,7 +1892,7 @@ ol {
 	text-transform: uppercase;
 	font-size: 16px;
 	font-weight: 700;
-	color: #f51167;
+	color: #007bff;
 	cursor: pointer;
 }
 
@@ -2142,7 +2142,7 @@ ol {
 
 .contact-social a:hover {
 	color: #fff;
-	background: #f51167;
+	background: #007bff;
 }
 
 .contact-form input,
@@ -2304,7 +2304,7 @@ ol {
 		font-size: 10px;
 		font-weight: 700;
 		color: #fff;
-		background: #f51167;
+		background: #007bff;
 		line-height: 1;
 		text-transform: uppercase;
 		padding: 5px 9px 1px;

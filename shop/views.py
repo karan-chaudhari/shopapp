@@ -32,7 +32,6 @@ def contact(request):
     return render(request, 'shop/contact.html') 
 
 def product(request, myid):
-    fprod = Feature_Product.objects.filter(id=myid)
     product = Product.objects.filter(id=myid)
     context = {'product':product[0]}
     return render(request, 'shop/product.html', context)
