@@ -88,22 +88,32 @@
 						<p>Quantity</p>
                         <div class="pro-qty"><input type="text" value="1"></div>
                     </div>
-					<a href="#" id="pr{{product.id}}" class="site-btn cart">ADD TO CART</a>
-					<a href="#" class="site-btn my-2">CHECKOUT</a>
+                    {% if product.id %}
+                    <span id="divpr{{product.id}}">
+		            	<button id="pr{{product.id}}" class="site-btn cart">ADD TO CART</button>
+		          	</span>
+		          	{% elif fprod.id %}
+		          	<span id="divpr{{fprod.id}}">
+		            	<button id="pr{{fprod.id}}" class="site-btn cart">ADD TO CART</button>
+		          	</span>
+		          	{% endif %}
+					<button class="site-btn my-2">CHECKOUT</button>
 					<div id="accordion" class="accordion-area">
 						<div class="panel">
 							<div class="panel-header" id="headingOne">
+							{% if product.desc or fprod.desc %}
 								<button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">description</button>
 							</div>
 							<div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">								
 								<div class="panel-body">
 									{% if product.desc %}
 									<pre style="white-space: pre-line;">{{product.desc}}</pre>
-									{% else %}
+									{% elif fprod.desc %}
 									<pre style="white-space: pre-line;">{{fprod.desc}}</pre>
 									{% endif %}
 								</div>								
 							</div>
+							{% endif %}
 						</div>
 						
 						<div class="panel">
@@ -135,4 +145,6 @@
 		</div>
 	</section>
 	<!-- product section end -->
+{% endblock %}
+{% block js %}
 {% endblock %}

@@ -61,15 +61,15 @@
       </div>
     </div>
   </section>
-  <!-- Features section end -->
+  <!-- Features section end -->  
 <section class="top-letest-product-section">
-    <div class="container">     
-      <div class="section-title">
-      {% for products, range, nSlides in allProd %}
-      </div>
-      <h2 class="section-title">LATEST {{products.0.cate.upper}} PRODUCTS</h2>
+    <div class="container">  
+    <div class="section-title">
+      {% for products, nSlides in allProd %}
+    </div>
+      <h2 class="section-title">LATEST {{products.0.cate.upper}} PRODUCTS</h2>     
       <div class="product-slider owl-carousel">  
-        {% for product in products %} 
+        {% for product in products %}
         <div class="product-item">
           <div class="pi-pic">
             <a href="/shop/product/{{product.id}}"><div><img src="{{product.img.url}}"></div></a>
@@ -78,15 +78,15 @@
             <h6>{{product.price}}</h6>
             <a href="/shop/product/{{product.id}}">{{product.product_name}}</a>
           </div>
-          <button id="pr{{product.id}}" class="site-btn cart">ADD TO CART</button>
+          <div style="padding-left: 40px;">
+          <span id="divpr{{product.id}}">
+            <button id="pr{{product.id}}" class="site-btn cart">ADD TO CART</button>
+          </span></div>
           <pre>
         </div>
         {% endfor %}
-        {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
-      </div><div class="product-slider owl-carousel">
-        {% endif %}
-      {% endfor %}
+        {% endfor %}
     </div>
   </div>
-  </section>    
-{% endblock content %}  
+</section>
+{% endblock %}  

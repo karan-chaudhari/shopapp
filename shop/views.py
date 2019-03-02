@@ -13,7 +13,7 @@ def index(request):
         prod = Product.objects.filter(cate=cate)[::-1]
         n = len(prod)
         nSlides = n//4 + ceil((n/4) - (n//4))
-        allProd.append([prod, range(1,nSlides), nSlides])
+        allProd.append([prod, nSlides])
     context = {'allProd':allProd, 'feat_prods':feat_prods}            
     return render(request, 'shop/index.html', context)
 
@@ -43,6 +43,9 @@ def fea_product(request, myid):
 
 def tracker(request):
     return HttpResponse('Tracker')
+
+def cart(request):
+    return render(request, 'shop/cart.html')
 
 def checkout(request):
     return HttpResponse('Check Out')
