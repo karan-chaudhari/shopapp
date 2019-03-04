@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Favicon -->
   <link href="{% static 'img/favicon.ico' %}" rel="shortcut icon"/>
-
+  
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
 
@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/animate.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/mainstyle.css' %}"/>
+  <link rel="stylesheet" href="{% static 'css/carousel.css' %}"/>
+
 
 
   <!--[if lt IE 9]>
@@ -259,16 +261,15 @@
       else{
         cart[idstr] = 1;
       }
-      gotocart(cart);
-        
+      localStorage.setItem('cart', JSON.stringify(cart));
+      document.getElementById('cart').innerHTML = Object.keys(cart).length;
+      gotocart(cart);    
     });
 
     function gotocart(cart){
       for (var item in cart) {
-      document.getElementById('div'+item).innerHTML = "<a href='/shop/cart' ><button class='site-btn cart' style='background-color:#17a2b8;'>GO TO CART</button></a>";
-      }
-      localStorage.setItem('cart', JSON.stringify(cart));
-      document.getElementById('cart').innerHTML = Object.keys(cart).length;
+      document.getElementById('div'+item).innerHTML = "<a href='/shop/cart/' style='background-color:#17a2b8;' class='site-btn cart'>Go to Cart</a>";
+      } 
     }
 
     $('#popcart').popover();

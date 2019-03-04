@@ -2,6 +2,7 @@
 {% load static %}
 {% block title %}Divisima{% endblock %}
 {% block content %}
+
   <!-- Hero section -->
   <section class="hero-section">
     <div class="hero-slider owl-carousel">
@@ -61,32 +62,59 @@
       </div>
     </div>
   </section>
-  <!-- Features section end -->  
-<section class="top-letest-product-section">
-    <div class="container">  
-    <div class="section-title">
-      {% for products, nSlides in allProd %}
-    </div>
-      <h2 class="section-title">LATEST {{products.0.cate.upper}} PRODUCTS</h2>     
-      <div class="product-slider owl-carousel">  
-        {% for product in products %}
-        <div class="product-item">
-          <div class="pi-pic">
-            <a href="/shop/product/{{product.id}}"><div><img src="{{product.img.url}}"></div></a>
+
+<div class="container my-4">
+  
+  <div class="row">
+
+    <div class="col-md-12">
+      {% for product, nSlides in allProd %}
+      <h2 class="text-center">LATEST {{product.0.cate.upper}} PRODUCTS</h2>
+      <div id="myCarousel{{forloop.counter}}" class="carousel slide" data-ride="carousel" data-interval="0"> 
+      <!-- Wrapper for carousel items -->
+      <div class="carousel-inner">
+        <div class="item carousel-item active">
+          <div class="row">   
+          {% for i in product %}    
+            <div class="col-sm-3">
+              <div class="thumb-wrapper">
+                <div class="img-box">
+                  <a href="/shop/product/{{i.id}}">
+                  <img src="{{i.img.url}}" class="img-responsive img-fluid" alt=""></a>
+                </div>
+                <div class="thumb-content">
+                  <a href="/shop/product/{{i.id}}"><h4>{{i.product_name}}</h4></a>
+                  <p class="item-price"><span>{{i.price}}</span></p>                  
+                </div>                   
+                    <span id="divpr{{i.id}}">
+                    <a id="pr{{i.id}}" class="site-btn cart" style="color: white;">Add to Cart</a>
+                  </span> 
+                </div>    
+            </div>
+            {% if forloop.counter|divisibleby:4 and forloop.counter > 0 and not forloop.last %}
           </div>
-          <div class="pi-text">
-            <h6>{{product.price}}</h6>
-            <a href="/shop/product/{{product.id}}">{{product.product_name}}</a>
-          </div>
-          <div style="padding-left: 40px;">
-          <span id="divpr{{product.id}}">
-            <button id="pr{{product.id}}" class="site-btn cart">ADD TO CART</button>
-          </span></div>
-          <pre>
         </div>
-        {% endfor %}
-        {% endfor %}
+        <div class="item carousel-item">
+          <div class="row">
+            {% endif %}
+          {% endfor %}
+          </div>        
+      </div>
+      </div>
+      <!-- Carousel controls -->
+      <a class="carousel-control left carousel-control-prev" href="#myCarousel{{forloop.counter}}" data-slide="prev">
+        <i class="fa fa-angle-left"></i>
+      </a>
+      <a class="carousel-control right carousel-control-next" href="#myCarousel{{forloop.counter}}" data-slide="next">
+        <i class="fa fa-angle-right"></i>
+      </a>
+    
+    </div>
+    {% endfor %}
     </div>
   </div>
-</section>
+  
+</div>
+{% endblock %}
+{% block js %}
 {% endblock %}  

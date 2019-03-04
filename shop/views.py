@@ -17,6 +17,7 @@ def index(request):
     context = {'allProd':allProd, 'feat_prods':feat_prods}            
     return render(request, 'shop/index.html', context)
 
+
 def about(request):
     return render(request, 'shop/about.html')
 
