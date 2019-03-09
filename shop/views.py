@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db.models import Q
 from django.contrib import messages
 from .models import Product, Contact, Feature_Product
 from math import ceil
@@ -34,13 +35,22 @@ def contact(request):
 
 def product(request, myid):
     product = Product.objects.filter(id=myid)
-    context = {'product':product[0]}
+    context = {'i':product[0]}
     return render(request, 'shop/product.html', context)
 
 def fea_product(request, myid):
     fprod = Feature_Product.objects.filter(id=myid)
     context = {'fprod':fprod[0]}
     return render(request, 'shop/product.html', context)
+
+def search(request, cate=None):
+    if 'search' in request.GET:
+        search_prod = request.GET["search"]
+        prod = Product.objects.filter(Q(product_name__icontains=search_prod)|Q(cate__icontains=search_prod)|Q(subcate__icontains=search_prod))     
+        if not prod:
+            messages.info(request,"Sorry, no results found!")
+        context = {'prod':prod,'search_prod':search_prod}
+        return render(request, 'shop/search.html',context)    
 
 def tracker(request):
     return HttpResponse('Tracker')

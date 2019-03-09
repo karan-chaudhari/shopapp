@@ -50,8 +50,8 @@
             </a>
           </div>
           <div class="col-xl-6 col-lg-5">
-            <form class="header-search-form">
-              <input type="text" placeholder="Search on divisima ....">
+            <form class="header-search-form" action="/shop/search/">
+              <input type="search" name="search" required="" value="{{search_prod}}" placeholder="Search on divisima ....">
               <button><i class="flaticon-search"></i></button>
             </form>
           </div>
@@ -253,6 +253,7 @@
       gotocart(cart);
     }
 
+
     $('.cart').click(function(){
       var idstr = this.id.toString();
       if (cart[idstr] != undefined){
@@ -260,17 +261,21 @@
       }
       else{
         cart[idstr] = 1;
-      }
+      }     
       localStorage.setItem('cart', JSON.stringify(cart));
       document.getElementById('cart').innerHTML = Object.keys(cart).length;
-      gotocart(cart);    
+      gotocart(cart);
     });
 
+
     function gotocart(cart){
-      for (var item in cart) {
-      document.getElementById('div'+item).innerHTML = "<a href='/shop/cart/' style='background-color:#17a2b8;' class='site-btn cart'>Go to Cart</a>";
-      } 
-    }
+      for (let item in cart)
+       { 
+         document.getElementById('div'+item).innerHTML = "<a href='/shop/cart/' style='background-color:#17a2b8;' class='site-btn cart'>Go to Cart</a>";
+        }
+      }     
+
+
 
     $('#popcart').popover();
     document.getElementById('popcart').setAttribute('data-content','<h5>Cart</h5>');
