@@ -81,15 +81,15 @@
               <div class="thumb-wrapper">
                 <div class="img-box" style="height: 250px;">
                   <a href="/shop/product/{{i.id}}">
-                  <img src="{{i.img.url}}" class="img-responsive img-fluid" alt=""></a>
+                  <img id="imgpr{{i.id}}" src="{{i.img.url}}" class="img-responsive img-fluid" alt=""></a>
                 </div>
                 <div class="thumb-content">
-                  <a href="/shop/product/{{i.id}}"><h4>{{i.product_name}}</h4></a>
+                  <a id="namepr{{i.id}}" href="/shop/product/{{i.id}}"><h6>{{i.product_name}}</h6></a>
                   <p class="item-price"><span>{{i.price}}</span></p>                  
                 </div>                   
                   <span id="divpr{{i.id}}">
                     <a id="pr{{i.id}}" class="site-btn cart" style="color: white;">Add to Cart</a>
-                  </span> 
+                  </span>
                   <pre>
                 </div>    
             </div>
