@@ -25,7 +25,6 @@
   <link rel="stylesheet" href="{% static 'css/mainstyle.css' %}"/>
   <link rel="stylesheet" href="{% static 'css/carousel.css' %}"/>
 
-
 <!-- 
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script> -->
@@ -64,13 +63,14 @@
                   <i class="flaticon-bag"></i>
                   <span id="cart">0</span>
                 </div>
-                <a href="#" id="popcart" data-toggle="popover" data-container="body" data-html="true" data-placement="bottom">Shopping Cart</a>
+                <a href="#" id="popcart" data-toggle="popover" data-container="body" data-html="true" data-placement="bottom" data-img="{% static 'img/thumb-1.jpg' %}">Shopping Cart</a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
     <nav class="main-navbar">
       <div class="container">
         <!-- menu -->
@@ -262,6 +262,7 @@
       localStorage.setItem('cart', JSON.stringify(cart));
       document.getElementById('cart').innerHTML = Object.keys(cart).length;
       gotocart(cart);
+      updatePopover(cart);
     });  
 
     function gotocart(cart){
@@ -272,26 +273,66 @@
       }      
 
     function updatePopover(cart){
-      console.log("inside updatePopover");
       var popStr = "";
-      popStr = popStr + "<h5>Cart Items</h5><div class='mx-2 my-2'>";
-      var i = 1;
+      popStr = popStr + "<button type='button' onclick='closePopover();' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
       for (var item in cart){
-        popStr = popStr + document.getElementById('name'+item).innerHTML + "Qty: " + cart[item] + '<br>';
-        i = i + 1;
-      }
-      popStr = popStr + "</div>";
+       popStr = popStr + "<div class='shopping-cart-items'><div style='max-width:15%;'>" + document.getElementById('img'+item).innerHTML + "</div>"+"<div class='item-name'>"+document.getElementById('name'+item).innerHTML+"</div><div class='item-price'>"+document.getElementById('price'+item).innerHTML+"</div><div class='item-quantity'>Quantity: "+cart[item]+"</div></div>";
+       }
+      popStr = popStr + "<a href='#' class='button'>Checkout</a>";
+
       document.getElementById('popcart').setAttribute('data-content', popStr);
+
       $('#popcart').popover('show');
     }  
-
-    $('#popcart').popover();
+    
     updatePopover(cart);
 
+    function closePopover(){
+        $('#popcart').popover('hide');
+      }
   </script>
-  
+
+  <style type="text/css">
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+ .shopping-cart-items {
+    padding-top: 25px;
+      li {
+        margin-bottom: 18px;
+      }
+    img {
+      float: left;
+      margin-right: 12px;
+    }
+    .item-name {
+      display: block;
+      padding-top: 10px;
+      font-size: 16px;
+    }
+    .item-price {
+      color: #6394F8;
+      margin-right: 8px;
+    }
+    .item-quantity {
+      color: $light-text;
+    }
+  }
+   
+.button {
+  background: #6394F8;
+  color:white;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  display: block;
+  border-radius: 3px;
+  font-size: 16px;
+  margin: 25px 0 15px 0;
+}
+  </style>
 {% block js %}
- 
 {% endblock %}
   </body>
 </html>
