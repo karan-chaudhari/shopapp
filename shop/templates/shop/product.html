@@ -2,151 +2,146 @@
 {% load static %}
 {% block title %}{{i.product_name}} - Divisima{% endblock %}
 {% block content %}
-	<!-- product section -->
-	<section class="product-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6">
-					<div class="product-pic-zoom">
-						{% if fprod.img %}
-						<img class="product-big-img" height="400" src="{{fprod.img.url}}" alt="">
-						{% else %}
-						<img class="product-big-img" src="{{i.img.url}}" alt="">
-						{% endif %}
-					</div>
-				</div>
-				<div class="col-lg-6 product-details">
-					{% if fprod.product_name %}
-					<h2 class="p-title">{{fprod.product_name}}</h2>
-					<h3 class="p-price">{{fprod.price}}</h3>
-					{% else %}
-					<h2 class="p-title">{{i.product_name}}</h2>
-					<h3 class="p-price">{{i.price}}</h3>
-					{% endif %}					
-					<h4 class="p-stock">Available: <span>In Stock</span></h4>
-					<div class="p-rating">
-						<i class="fa fa-star-o"></i>
-						<i class="fa fa-star-o"></i>
-						<i class="fa fa-star-o"></i>
-						<i class="fa fa-star-o"></i>
-						<i class="fa fa-star-o fa-fade"></i>
-					</div>
-					<div class="p-review">
-						<a href="">3 reviews</a>|<a href="">Add your review</a>
-					</div>
-					<div class="fw-size-choose">
-						<p>Size</p>
-						{% if i.cate == 'Shoes' or fprod.cate == 'Shoes' %}
-						<div class="sc-item">
-							<input type="radio" name="sc" id="xs-size">
-							<label for="xs-size">6</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="xs-size" checked="">
-							<label for="xs-size">7</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="xs-size">
-							<label for="xs-size">8</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="xs-size">
-							<label for="xs-size">9</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="xs-size">
-							<label for="xs-size">10</label>
-						</div>
-						{% else %}
-						<div class="sc-item">
-							<input type="radio" name="sc" id="xs-size">
-							<label for="xs-size">32</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="s-size">
-							<label for="s-size">34</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="m-size" checked="">
-							<label for="m-size">36</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="l-size">
-							<label for="l-size">38</label>
-						</div>
-						<div class="sc-item disable">
-							<input type="radio" name="sc" id="xl-size" disabled>
-							<label for="xl-size">40</label>
-						</div>
-						<div class="sc-item">
-							<input type="radio" name="sc" id="xxl-size">
-							<label for="xxl-size">42</label>
-						</div>
-						{% endif %}
-					</div>
-					<div class="quantity">
-						<p>Quantity</p>
-                        <div class="pro-qty"><input type="text" value="1"></div>
+<!-- product section -->
+<section class="product-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="product-pic-zoom">
+                    {% if fprod.img %}
+                    <img class="product-big-img" height="400" src="{{fprod.img.url}}" alt="">
+                    {% else %}
+                    <img class="product-big-img" src="{{i.img.url}}" alt="">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 product-details">
+                {% if fprod.product_name %}
+                <h2 class="p-title">{{fprod.product_name}}</h2>
+                <h3 class="p-price">{{fprod.price}}</h3>
+                {% else %}
+                <h2 class="p-title">{{i.product_name}}</h2>
+                <h3 class="p-price">{{i.price}}</h3>
+                {% endif %}
+                <h4 class="p-stock">Available: <span>In Stock</span></h4>
+                <div class="p-rating">
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o fa-fade"></i>
+                </div>
+                <div class="p-review">
+                    <a href="">3 reviews</a>|<a href="">Add your review</a>
+                </div>
+                <div class="fw-size-choose">
+                    <p>Size</p>
+                    {% if i.cate == 'Shoes' or fprod.cate == 'Shoes' %}
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xs-size">
+                        <label for="xs-size">6</label>
                     </div>
-                    {% if i.id %}
-			        <span id="divpr{{i.id}}">
-	                    <a id="pr{{i.id}}" class="site-btn cart" style="color: white;">ADD TO CART</a>
-	                </span> 
-		          	{% elif fprod.id %}
-		          	<span id="divpr{{fprod.id}}">
-		            	<button id="pr{{fprod.id}}" class="site-btn cart">ADD TO CART</button>
-		          	</span>
-		          	{% endif %}
-					<button class="site-btn my-2">CHECKOUT</button>
-					<div id="accordion" class="accordion-area">
-						<div class="panel">
-							<div class="panel-header" id="headingOne">
-							{% if i.desc or fprod.desc %}
-								<button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">description</button>
-							</div>
-							<div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">								
-								<div class="panel-body">
-									{% if i.desc %}
-									<pre style="white-space: pre-line;">{{i.desc}}</pre>
-									{% elif fprod.desc %}
-									<pre style="white-space: pre-line;">{{fprod.desc}}</pre>
-									{% endif %}
-								</div>								
-							</div>
-							{% endif %}
-						</div>
-						
-						<div class="panel">
-							<div class="panel-header" id="headingTwo">
-								<button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">card details </button>
-							</div>
-							<div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-								<div class="panel-body">
-									<img src="{% static './img/cards.png' %}" alt="">
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
-								</div>
-							</div>
-						</div>
-						<div class="panel">
-							<div class="panel-header" id="headingThree">
-								<button class="panel-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">shipping & Returns</button>
-							</div>
-							<div id="collapse3" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-								<div class="panel-body">
-									<h4>7 Days Returns</h4>
-									<p>Cash on Delivery Available<br>Home Delivery <span>3 - 4 days</span></p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- product section end -->
-
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xs-size" checked="">
+                        <label for="xs-size">7</label>
+                    </div>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xs-size">
+                        <label for="xs-size">8</label>
+                    </div>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xs-size">
+                        <label for="xs-size">9</label>
+                    </div>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xs-size">
+                        <label for="xs-size">10</label>
+                    </div>
+                    {% else %}
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xs-size">
+                        <label for="xs-size">32</label>
+                    </div>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="s-size">
+                        <label for="s-size">34</label>
+                    </div>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="m-size" checked="">
+                        <label for="m-size">36</label>
+                    </div>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="l-size">
+                        <label for="l-size">38</label>
+                    </div>
+                    <div class="sc-item disable">
+                        <input type="radio" name="sc" id="xl-size" disabled>
+                        <label for="xl-size">40</label>
+                    </div>
+                    <div class="sc-item">
+                        <input type="radio" name="sc" id="xxl-size">
+                        <label for="xxl-size">42</label>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="quantity">
+                    <p>Quantity</p>
+                    <div class="pro-qty"><input type="text" value="1"></div>
+                </div>
+                {% if i.id %}
+                <a id="pr{{i.id}}" class="site-btn cart" style="color: white;">Add to Cart</a>
+                {% elif fprod.id %}
+                <span>
+                    <button id="pr{{fprod.id}}" class="site-btn cart">ADD TO CART</button>
+                </span>
+                {% endif %}
+                <button class="site-btn my-2">CHECKOUT</button>
+                <div id="accordion" class="accordion-area">
+                    <div class="panel">
+                        <div class="panel-header" id="headingOne">
+                            {% if i.desc or fprod.desc %}
+                            <button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">description</button>
+                        </div>
+                        <div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <div class="panel-body">
+                                {% if i.desc %}
+                                <pre style="white-space: pre-line;">{{i.desc}}</pre>
+                                {% elif fprod.desc %}
+                                <pre style="white-space: pre-line;">{{fprod.desc}}</pre>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header" id="headingTwo">
+                            <button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">card details </button>
+                        </div>
+                        <div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                            <div class="panel-body">
+                                <img src="{% static './img/cards.png' %}" alt="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header" id="headingThree">
+                            <button class="panel-link" data-toggle="collapse" data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">shipping & Returns</button>
+                        </div>
+                        <div id="collapse3" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <div class="panel-body">
+                                <h4>7 Days Returns</h4>
+                                <p>Cash on Delivery Available<br>Home Delivery <span>3 - 4 days</span></p>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- product section end -->
 {% endblock %}
 {% block js %}
-
 {% endblock %}

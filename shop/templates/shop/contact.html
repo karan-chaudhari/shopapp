@@ -1,57 +1,54 @@
 {% extends 'shop/layout.html' %}
 {% block title %}Contact Us{% endblock %}
 {% block content %}
-	<!-- Page info -->
-	<div class="page-top-info">
-		<div class="container section-title">
-			<h4>Contact Us</h4>
-		</div>
-	</div>
-	<!-- Page info end -->
-	
-	<div class="container my-3">
-		{% if messages %}
-			{% for message in messages %}
-				<div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-				  {{message}}
-				  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				    <span aria-hidden="true">&times;</span>
-				  </button>
-				</div>
-			{% endfor %}
-		{% endif %}
-	</div>
-
-	<!-- Contact section -->
-	<section class="contact-section">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-6 contact-info">
-					<h3>Get in touch</h3>
-					<p>89, Nilkamal Society, Naroda, Ahmedabad</p>
-					<p>+546 990221 123</p>
-					<p>divisima@contact.com</p>
-					<div class="contact-social">
-						<a href="#"><i class="fa fa-pinterest"></i></a>
-						<a href="#"><i class="fa fa-facebook"></i></a>
-						<a href="#"><i class="fa fa-twitter"></i></a>
-						<a href="#"><i class="fa fa-dribbble"></i></a>
-						<a href="#"><i class="fa fa-behance"></i></a>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<form class="contact-form" action="/shop/contact/" method="post">
-						{% csrf_token %}
-						<input type="text" name="name" placeholder="Your name" required>
-						<input type="e-mail" name="email" placeholder="Your e-mail" required>
-						<input type="phone" name="phone" placeholder="Your phone number" required>
-						<textarea name="msg" placeholder="Message" required></textarea>
-						<button class="site-btn">SEND NOW</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Contact section end -->
-
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container section-title">
+        <h4>Contact Us</h4>
+    </div>
+</div>
+<!-- Page info end -->
+<div class="container my-3">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+<!-- Contact section -->
+<section class="contact-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 contact-info">
+                <h3>Get in touch</h3>
+                <p>89, Nilkamal Society, Naroda, Ahmedabad</p>
+                <p>+546 990221 123</p>
+                <p>divisima@contact.com</p>
+                <div class="contact-social">
+                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-dribbble"></i></a>
+                    <a href="#"><i class="fa fa-behance"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <form class="contact-form" action="/shop/contact/" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="name" placeholder="Your name" required>
+                    <input type="e-mail" name="email" placeholder="Your e-mail" required>
+                    <input type="phone" name="phone" placeholder="Your phone number" required>
+                    <textarea name="msg" placeholder="Message" required></textarea>
+                    <button class="site-btn">SEND NOW</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact section end -->
 {% endblock %}

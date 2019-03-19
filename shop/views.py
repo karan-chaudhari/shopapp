@@ -54,9 +54,6 @@ def search(request, cate=None):
 
 def tracker(request):
     return HttpResponse('Tracker')
-
-def cart(request):
-    return render(request, 'shop/cart.html')
-
+    
 def checkout(request):
-    return HttpResponse('Check Out')
+    return render(request, 'shop/checkout.html')

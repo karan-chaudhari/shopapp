@@ -9,6 +9,5 @@ urlpatterns = [
     path('fea-product/<int:myid>', views.fea_product, name='fea_productView'),
     path('tracker/', views.tracker, name='tracker'),
     path('search/', views.search, name='search'),
-    path('cart/', views.cart, name='cart'),
     path('checkout/', views.checkout, name='checkout')
 ]

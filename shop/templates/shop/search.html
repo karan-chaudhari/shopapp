@@ -2,46 +2,48 @@
 {% load static %}
 {% block title %}{{search_prod}} - Divisima{% endblock %}
 {% block content %}
- 
-<!-- No result found --> 
-	{% if messages %}
-	{% for message in messages %}
-	<div style="background: #fff;padding: 50px;text-align: center;">
-		<img src="{% static 'img/no-result.png' %}">
-		<div style="font-size: 26px;font-weight: 500;margin: 20px 0 10px;"><b><h2>{{message}}</h2></b></div>
-		<div style="color: #878787;font-size: 20px;margin-bottom: 8px;">
-		Please check the spelling or try searching for something else
-	</div>
-	</div>
-	{% endfor %}
-	{% endif %}
+<!-- No result found -->
+{% if messages %}
+{% for message in messages %}
+<div style="background: #fff;padding: 50px;text-align: center;">
+    <img src="{% static 'img/no-result.png' %}">
+    <div style="font-size: 26px;font-weight: 500;margin: 20px 0 10px;"><b>
+            <h2>{{message}}</h2>
+        </b></div>
+    <div style="color: #878787;font-size: 20px;margin-bottom: 8px;">
+        Please check the spelling or try searching for something else
+    </div>
+</div>
+{% endfor %}
+{% endif %}
 <!-- Product filter section -->
-	
-	<section class="product-filter-section my-4">
-		<div class="container">
-			<div class="row">
-				{% for i in prod %}
-				<div class="col-lg-3 col-sm-6 my-2">
-					<div class="product-item">
-						<div class="pi-pic">
-						<a href="/shop/product/{{i.id}}">
-							<img src="{{i.img.url}}" height="300" width="300" alt="">
-						</a>
-						</div>
-						<div class="pi-text">
-							<h6>{{i.price}}</h6>
-							<a href="/shop/product/{{i.id}}"><p>{{i.product_name}}</p></a>
-						</div>
-						<div style="padding-left: 40px;">
-							<span id="divpr{{i.id}}">
-			                    <a id="pr{{i.id}}" class="site-btn cart" style="color: white;">Add to Cart</a>
-			                </span> 
-						</div>						
-					</div>
-				</div>
-				{% endfor %}
-			</div>
-			</div>
-		</div>
-	</section>
+<section class="product-filter-section my-4">
+    <div class="container">
+        <div class="row">
+            {% for i in prod %}
+            <div class="col-lg-3 col-sm-6 my-2">
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <a href="/shop/product/{{i.id}}">
+                            <img src="{{i.img.url}}" height="300" width="300" alt="">
+                        </a>
+                    </div>
+                    <div class="pi-text">
+                        <h6>{{i.price}}</h6>
+                        <a href="/shop/product/{{i.id}}">
+                            <p>{{i.product_name}}</p>
+                        </a>
+                    </div>
+                    <div style="padding-left: 40px;">
+                        <span id="divpr{{i.id}}">
+                            <a id="pr{{i.id}}" class="site-btn cart" style="color: white;">Add to Cart</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+</section>
 {% endblock %}
