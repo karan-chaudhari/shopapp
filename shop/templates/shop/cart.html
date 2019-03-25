@@ -1,0 +1,132 @@
+{% extends 'shop/layout.html' %}
+{% load static %}
+{% block title %}Cart - Divisima{% endblock %}
+{% block content %}
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container section-title">
+        <h4>CART</h4>
+    </div>
+</div>
+<!-- Page info end -->
+<span id="emptycart">
+    <p></p>
+</span>
+<!-- cart section end -->
+<section class="cart-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="cart-table">
+                    <h3 class="text-center">Your Cart(<span id="cart-len"></span>)</h3>
+                    <div class="cart-table-warp">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="product-th">Product</th>
+                                    <th class="quy-th">Quantity</th>
+                                    <th class="total-th">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="items">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="total-cost">
+                        <h6>Total <span id="totalPrice"></span></h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 card-right">
+                <a href="/shop/checkout/" class="site-btn">Proceed to checkout</a>
+                <a href="/" class="site-btn sb-dark">Continue shopping</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- cart section end -->
+{% endblock %}
+{% block js %}
+<script>
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+}
+document.getElementById('cart-len').innerHTML = Object.keys(cart).length;
+var totalPrice = 0;
+if ($.isEmptyObject(cart)) {
+    mystr = `<div class='text-center'><h2>Your cart is empty. Please add some items before checkout!</h2></div>`;
+    $('#emptycart').append(mystr);
+    document.getElementById('totalPrice').innerHTML = "₹" + 0;
+} else {
+    updatecheckout(cart);
+}
+
+function updatecheckout(cart) {
+    totalPrice = 0;
+    for (item in cart) {
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        let price = cart[item][2];
+        let img = cart[item][3];
+        let itemPrice = qty * price.slice(1, );
+        totalPrice = totalPrice + (qty * price.slice(1, ));
+        mystr = `<tr><td class="product-col"><div class='cart-detail-img'>${img}</div><div class="pc-title"><h4>${name}</h4><p>${price}</p></div></td><td class="quy-col text-center"><span id='divload' class='divpr'><span id='disbtnminus${item}'><button id='minus${item}' class='quantity-btn minus' style='background-color: Transparent;border: none;color:black;'>-</button></span><span id='val${item}'>${qty}</span><button id='plus${item}' class='quantity-btn plus' style='background-color: Transparent;color:black;border: none;'>+</button></span></td><td class="total-col"><span id='update-price${item}'><h4>₹${itemPrice}</h4></span></td><td><a id='delpr${item}' class='fa fa-trash delcart float-right'></a></td></tr>`;
+        $('#items').append(mystr);
+        document.getElementById('totalPrice').innerHTML = "₹" + totalPrice;
+    }
+
+    $('.delcart').click(function() {
+        a = this.id.slice(7, );
+        delete cart['pr' + a];
+        $('#items').empty();
+        updatecheckout(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+        document.getElementById('cart-len').innerHTML = Object.keys(cart).length;
+        cartlen = Object.keys(cart).length;
+        if (cartlen == 0) {
+            mystr = `<div class='text-center'><h2>Your cart is empty. Please add some items before checkout!</h2></div>`;
+            $('#emptycart').append(mystr);
+            document.getElementById('totalPrice').innerHTML = "₹" + 0;
+        }
+    });
+
+    $('.divpr').on("click", "button.minus", function() {
+        a = this.id.slice(7, );
+        let price = cart['pr' + a][2];
+        cart['pr' + a][0] = cart['pr' + a][0] - 1;
+        let qty = cart['pr' + a][0];
+        if (qty > 0) {
+            totalPrice = totalPrice - price.slice(1, );
+            document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+            let qtys = Math.max(1, cart['pr' + a][0]);
+            updatecart(cart, qtys, a, totalPrice);
+        }
+    });
+
+    $('.divpr').on("click", "button.plus", function() {
+        a = this.id.slice(6, );
+        let price = cart['pr' + a][2];
+        cart['pr' + a][0] = cart['pr' + a][0] + 1;
+        totalPrice = totalPrice + (1) * price.slice(1, );
+        document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
+        let qtys = cart['pr' + a][0];
+        updatecart(cart, qtys, a, totalPrice);
+    });
+
+    function updatecart(cart, qtys, a, totalPrice) {
+        console.log(qtys);
+        let price = cart['pr' + a][2];
+        let itemPrice = qtys * price.slice(1, );
+        localStorage.setItem('cart', JSON.stringify(cart));
+        document.getElementById('cart').innerHTML = Object.keys(cart).length;
+        document.getElementById('update-pricepr' + a).innerHTML = `<h4>₹${itemPrice}</h4>`;
+        document.getElementById('totalPrice').innerHTML = "₹" + totalPrice;
+    }
+}
+
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+</script>
+{% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'shop/layout.html' %}
 {% load static %}
-{% block title %}Cart - Divisima{% endblock %}
+{% block title %}Checkout - Divisima{% endblock %}
 {% block content %}
 <!-- Page info -->
 <div class="page-top-info">
@@ -9,107 +9,97 @@
     </div>
 </div>
 <!-- Page info end -->
+<span id="emptycart">
+    <p></p>
+</span>
 <!-- cart section end -->
 <section class="cart-section spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="cart-table">
+                    <h3 class="text-center">Your Cart</h3>
                     <div class="cart-table-warp">
                         <table>
                             <thead>
                                 <tr>
                                     <th class="product-th">Product</th>
                                     <th class="quy-th">Quantity</th>
-                                    <th class="size-th">SizeSize</th>
                                     <th class="total-th">Price</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="product-col">
-                                        <img src="{% static 'img/cart/1.jpg' %}" alt="">
-                                        <div class="pc-title">
-                                            <h4>Animal Print Dress</h4>
-                                            <p>$45.90</p>
-                                        </div>
-                                    </td>
-                                    <td class="quy-col">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="size-col">
-                                        <h4>Size M</h4>
-                                    </td>
-                                    <td class="total-col">
-                                        <h4>$45.90</h4>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-col">
-                                        <img src="{% static 'img/cart/2.jpg' %}" alt="">
-                                        <div class="pc-title">
-                                            <h4>Ruffle Pink Top</h4>
-                                            <p>$45.90</p>
-                                        </div>
-                                    </td>
-                                    <td class="quy-col">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="size-col">
-                                        <h4>Size M</h4>
-                                    </td>
-                                    <td class="total-col">
-                                        <h4>$45.90</h4>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="product-col">
-                                        <img src="{% static 'img/cart/3.jpg' %}" alt="">
-                                        <div class="pc-title">
-                                            <h4>Skinny Jeans</h4>
-                                            <p>$45.90</p>
-                                        </div>
-                                    </td>
-                                    <td class="quy-col">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="size-col">
-                                        <h4>Size M</h4>
-                                    </td>
-                                    <td class="total-col">
-                                        <h4>$45.90</h4>
-                                    </td>
-                                </tr>
+                            <tbody id="items">
                             </tbody>
                         </table>
                     </div>
                     <div class="total-cost">
-                        <h6>Total <span>$99.90</span></h6>
+                        <h6>Total <span id="totalPrice"></span></h6>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 card-right">
-                <form class="promo-code-form">
-                    <input type="text" placeholder="Enter promo code">
-                    <button>Submit</button>
+        </div>
+        <a href="/shop/cart/"><button class="site-btn submit-order-btn my-4">Back To Cart</button></a>
+    </div>
+</section>
+<!-- cart section end -->
+<!-- checkout section  -->
+<section class="checkout-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 order-2 order-lg-1">
+                <form class="checkout-form">
+                    <div class="cf-title">Billing Address</div>
+                    <div class="row address-inputs">
+                        <div class="col-md-12">
+                            <input type="text" placeholder="Name">
+                            <input type="text" placeholder="Address">
+                            <input type="text" placeholder="Address line 2">
+                            <input type="text" placeholder="Country">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" placeholder="State">
+                            <input type="text" placeholder="Zip code">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" placeholder="City">
+                            <input type="text" placeholder="Phone no.">
+                        </div>
+                    </div>
+                    <button class="site-btn submit-order-btn">Place Order</button>
                 </form>
-                <a href="" class="site-btn">Proceed to checkout</a>
-                <a href="/" class="site-btn sb-dark">Continue shopping</a>
             </div>
         </div>
     </div>
 </section>
-<!-- cart section end -->
+<!-- checkout section end -->
+{% endblock %}
+{% block js %}
+<script>
+if (localStorage.getItem('cart') == null) {
+    var cart = {};
+} else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+}
+var totalPrice = 0;
+
+if ($.isEmptyObject(cart)) {
+    mystr = `<div class='text-center'><h2>Your cart is empty. Please add some items before checkout!</h2></div>`;
+    $('#emptycart').append(mystr);
+    document.getElementById('totalPrice').innerHTML = "₹" + 0;
+} else {
+    for (item in cart) {
+        let name = cart[item][1];
+        var qty = cart[item][0];
+        var price = cart[item][2];
+        let img = cart[item][3];
+        let itemPrice = qty * price.slice(1, );
+        totalPrice = totalPrice + (qty * price.slice(1, ));
+        mystr = `<tr><td class="product-col"><div class='cart-detail-img'>${img}</div><div class="pc-title"><h4>${name}</h4><p>${price}</p></div></td><td class="quy-col text-center">${qty}</td><td class="total-col"><span id='update-price${item}'><h4>₹${itemPrice}</h4></span></td></tr>`;
+        $('#items').append(mystr);
+    }
+}
+
+document.getElementById('totalPrice').innerHTML = "₹" + totalPrice;
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+</script>
 {% endblock %}

@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
     <link rel="stylesheet" href="{% static 'css/mainstyle.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/popovercart.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/popcart.css' %}" />
     <link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
     <!-- 
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -61,7 +61,7 @@
                                     <i class="flaticon-bag"></i>
                                     <span id="cart">0</span>
                                 </div>
-                                <a href="#" id="popcart" data-toggle="popover" data-container="body" data-html="true" data-placement="bottom" data-img="{% static 'img/thumb-1.jpg' %}">Shopping Cart</a>
+                                <a href="#" id="popcart" onclick="updatePopover(cart);" data-toggle="popover" data-container="body" data-html="true" data-placement="bottom" data-img="{% static 'img/thumb-1.jpg' %}">Shopping Cart</a>
                             </div>
                         </div>
                     </div>
@@ -222,7 +222,7 @@
     <!-- Footer section end -->
     <!--====== Javascripts & Jquery ======-->
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-    <!--  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script> -->
+     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
@@ -243,52 +243,55 @@
     $('.divpr').on('click', 'button.cart', function() {
         var idstr = this.id.toString();
         if (cart[idstr] != undefined) {
-            cart[idstr] = cart[idstr] + 1;
+            qty = cart[idstr][0] + 1;
         } else {
-            cart[idstr] = 1;
+            qty = 1;
+            name = document.getElementById('name' + idstr).innerHTML;
+            price = document.getElementById('price'+idstr).innerHTML;
+            img = document.getElementById('img'+idstr).innerHTML;
+            cart[idstr] = [qty, name, price, img];
         }
         updatecart(cart);
     });
 
     $('.divpr').on("click", "button.minus", function() {
         a = this.id.slice(7, );
-        cart['pr' + a] = cart['pr' + a] - 1;
-        cart['pr' + a] = Math.max(0, cart['pr' + a]);
-        if (cart['pr' + a] == 0) {
+        cart['pr' + a][0] = cart['pr' + a][0] - 1;
+        cart['pr' + a][0] = Math.max(0, cart['pr' + a][0]);
+        if (cart['pr' + a][0] == 0) {
             document.getElementById('divpr' + a).innerHTML = "<button id='pr" + a + "' class='site-btn cart'>Add to Cart</button>";
             delete cart['pr' + a];
         } else {
-            document.getElementById('valpr' + a).innerHTML = cart['pr' + a];
+            document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
         }
         updatecart(cart);
     });
 
     $('.divpr').on("click", "button.plus", function() {
         a = this.id.slice(6, );
-        cart['pr' + a] = cart['pr' + a] + 1;
-        document.getElementById('valpr' + a).innerHTML = cart['pr' + a];
+        cart['pr' + a][0] = cart['pr' + a][0] + 1;
+        document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
         updatecart(cart);
     });
 
     function updatecart(cart) {
         for (let item in cart) {
-            document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "' class='quantity-btn minus'>-</button><span id='val" + item + "'>" + cart[item] + "</span><button id='plus" + item + "' class='quantity-btn plus'>+</button>";
+            document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "' class='quantity-btn minus'>-</button><span id='val" + item + "'>" + cart[item][0] + "</span><button id='plus" + item + "' class='quantity-btn plus'>+</button>";
         }
         localStorage.setItem('cart', JSON.stringify(cart));
         document.getElementById('cart').innerHTML = Object.keys(cart).length;
         updatePopover(cart);
     }
 
-
     function updatePopover(cart) {
         var popStr = "";
         popStr = popStr + "<button type='button' onclick='closePopover();' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
         popStr = popStr + "<div class='row'>";
         for (var item in cart) {
-            popStr = popStr + "<div class='row cart-detail'><div class='col-lg-4 col-sm-4 col-4 cart-detail-img'>" + document.getElementById('img' + item).innerHTML + "</div><div class='col-lg-8 col-sm-8 col-8 cart-detail-product'><p>" + document.getElementById('name' + item).innerHTML + "</p><span class='count'> Qty:" + "<span class='divpop'><button id='minus" + item + "' style='background-color: Transparent;border: none;' class='dec qtybtn minus'>-</button>" + cart[item] + "<button id='plus" + item + "'style='background-color: Transparent;border: none;' class='inc qtybtn plus'>+</button></span>" + "</span><a id='delpr" + item + "' class='fa fa-trash delcart float-right'></a></div></div>";
+            popStr = popStr + "<div class='row cart-detail'><div class='col-lg-4 col-sm-4 col-4 cart-detail-img'>" + document.getElementById('img' + item).innerHTML + "</div><div class='col-lg-8 col-sm-8 col-8 cart-detail-product'><p>" + document.getElementById('name' + item).innerHTML + "</p><span class='count'> Qty:" + "<span class='divpop'><button id='minus" + item + "' style='background-color: Transparent;border: none;' class='dec qtybtn minus'>-</button>" + cart[item][0] + "<button id='plus" + item + "'style='background-color: Transparent;border: none;' class='inc qtybtn plus'>+</button></span>" + "</span><a id='delpr" + item + "' class='fa fa-trash delcart float-right'></a></div></div>";
         }
         popStr = popStr + "</div>";
-        popStr = popStr + "<a href='/shop/checkout/' class='btn btn-primary mx-3'>Checkout</a><button class='btn btn-danger mx-2' onclick='clearCart();'>Clear Cart</button>";
+        popStr = popStr + "<a href='/shop/cart/' class='btn btn-primary mx-3'>View Cart</a><button class='btn btn-danger mx-2' onclick='clearCart();'>Clear Cart</button>";
 
         let countcart = document.getElementById('cart').innerHTML;
         if (countcart == 0) {
@@ -309,21 +312,21 @@
 
         $('.divpop').on("click", "button.minus", function() {
             a = this.id.slice(7, );
-            cart['pr' + a] = cart['pr' + a] - 1;
-            cart['pr' + a] = Math.max(0, cart['pr' + a]);
-            if (cart['pr' + a] == 0) {
+            cart['pr' + a][0] = cart['pr' + a][0] - 1;
+            cart['pr' + a][0] = Math.max(0, cart['pr' + a][0]);
+            if (cart['pr' + a][0] == 0) {
                 document.getElementById('divpr' + a).innerHTML = "<button id='pr" + a + "' class='site-btn cart'>Add to Cart</button>";
                 delete cart['pr' + a];
             } else {
-                document.getElementById('valpr' + a).innerHTML = cart['pr' + a];
+                document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
             }
             updatecart(cart);
         });
 
         $('.divpop').on("click", "button.plus", function() {
             a = this.id.slice(6, );
-            cart['pr' + a] = cart['pr' + a] + 1;
-            document.getElementById('valpr' + a).innerHTML = cart['pr' + a];
+            cart['pr' + a][0] = cart['pr' + a][0] + 1;
+            document.getElementById('valpr' + a).innerHTML = cart['pr' + a][0];
             updatecart(cart);
         });
 

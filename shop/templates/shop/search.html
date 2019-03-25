@@ -25,18 +25,20 @@
                 <div class="product-item">
                     <div class="pi-pic">
                         <a href="/shop/product/{{i.id}}">
-                            <img src="{{i.img.url}}" height="300" width="300" alt="">
+                            <div id="imgpr{{i.id}}">
+                                <img src="{{i.img.url}}" height="300" width="300" alt="">
+                            </div>
                         </a>
                     </div>
                     <div class="pi-text">
-                        <h6>{{i.price}}</h6>
-                        <a href="/shop/product/{{i.id}}">
+                        <h6 id="pricepr{{i.id}}">{{i.price}}</h6>
+                        <a id="namepr{{i.id}}" href="/shop/product/{{i.id}}">
                             <p>{{i.product_name}}</p>
                         </a>
                     </div>
-                    <div style="padding-left: 40px;">
-                        <span id="divpr{{i.id}}">
-                            <a id="pr{{i.id}}" class="site-btn cart" style="color: white;">Add to Cart</a>
+                    <div style="padding-left: 40px;" class="float-center">
+                        <span id="divpr{{i.id}}" class="divpr">
+                            <button id="pr{{i.id}}" class="site-btn cart">Add to Cart</button>
                         </span>
                     </div>
                 </div>
@@ -46,4 +48,9 @@
     </div>
     </div>
 </section>
+{% endblock %}
+{% block js %}
+<script>
+document.getElementById('cart').innerHTML = Object.keys(cart).length;
+</script>
 {% endblock %}
