@@ -13,7 +13,7 @@
     <p></p>
 </span>
 <!-- cart section end -->
-<section class="cart-section spad">
+<section class="cart-section spad" id="hidecart">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
@@ -56,9 +56,9 @@ if (localStorage.getItem('cart') == null) {
 document.getElementById('cart-len').innerHTML = Object.keys(cart).length;
 var totalPrice = 0;
 if ($.isEmptyObject(cart)) {
-    mystr = `<div class='text-center'><h2>Your cart is empty. Please add some items before checkout!</h2></div>`;
+    mystr = `<div class='text-center'><img src="{% static 'img/empty-cart.png' %}" height="300"><h2>Your Shopping Cart is empty.</h2></div>`;
     $('#emptycart').append(mystr);
-    document.getElementById('totalPrice').innerHTML = "₹" + 0;
+    $('#hidecart').hide();
 } else {
     updatecheckout(cart);
 }
@@ -87,9 +87,9 @@ function updatecheckout(cart) {
         document.getElementById('cart-len').innerHTML = Object.keys(cart).length;
         cartlen = Object.keys(cart).length;
         if (cartlen == 0) {
-            mystr = `<div class='text-center'><h2>Your cart is empty. Please add some items before checkout!</h2></div>`;
+            mystr = `<div class='text-center'><img src="{% static 'img/empty-cart.png' %}" height="300"><h2>Your Shopping Cart is empty.</h2></div>`;
             $('#emptycart').append(mystr);
-            document.getElementById('totalPrice').innerHTML = "₹" + 0;
+            $('#hidecart').hide();
         }
     });
 

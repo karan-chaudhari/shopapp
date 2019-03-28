@@ -61,7 +61,7 @@
                                     <i class="flaticon-bag"></i>
                                     <span id="cart">0</span>
                                 </div>
-                                <a href="#" id="popcart" onclick="updatePopover(cart);" data-toggle="popover" data-container="body" data-html="true" data-placement="bottom" data-img="{% static 'img/thumb-1.jpg' %}">Shopping Cart</a>
+                                <a href="/shop/cart/" id="popcart" data-toggle="popover" data-container="body" data-html="true" data-placement="bottom" data-img="{% static 'img/thumb-1.jpg' %}">Shopping Cart</a>
                             </div>
                         </div>
                     </div>
@@ -222,7 +222,7 @@
     <!-- Footer section end -->
     <!--====== Javascripts & Jquery ======-->
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
@@ -247,8 +247,8 @@
         } else {
             qty = 1;
             name = document.getElementById('name' + idstr).innerHTML;
-            price = document.getElementById('price'+idstr).innerHTML;
-            img = document.getElementById('img'+idstr).innerHTML;
+            price = document.getElementById('price' + idstr).innerHTML;
+            img = document.getElementById('img' + idstr).innerHTML;
             cart[idstr] = [qty, name, price, img];
         }
         updatecart(cart);
@@ -275,7 +275,7 @@
     });
 
     function updatecart(cart) {
-        for (let item in cart) {
+        for (let item in this.cart) {
             document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "' class='quantity-btn minus'>-</button><span id='val" + item + "'>" + cart[item][0] + "</span><button id='plus" + item + "' class='quantity-btn plus'>+</button>";
         }
         localStorage.setItem('cart', JSON.stringify(cart));
