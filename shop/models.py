@@ -32,3 +32,18 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name        
+
+class Order(models.Model):
+    items_json = models.TextField(max_length=5000)
+    amount = models.CharField(max_length=10, default="")
+    name = models.CharField(max_length=50)
+    address = models.TextField(max_length=200)
+    address2 = models.TextField(max_length=200)
+    country = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+
+    def __str__(self):
+        return str(self.id) + ". " + self.name

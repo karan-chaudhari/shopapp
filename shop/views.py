@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib import messages
-from .models import Product, Contact, Feature_Product
+from .models import Product, Contact, Feature_Product, Order
 from math import ceil
 
 def index(request):    
@@ -46,7 +46,8 @@ def fea_product(request, myid):
 def search(request, cate=None):
     if 'search' in request.GET:
         search_prod = request.GET["search"]
-        prod = Product.objects.filter(Q(product_name__icontains=search_prod)|Q(cate__icontains=search_prod)|Q(subcate__icontains=search_prod))     
+        prod = Product.objects.filter(Q(product_name__icontains=search_prod)|
+            Q(cate__icontains=search_prod)|Q(subcate__icontains=search_prod))     
         if not prod:
             messages.info(request,"Sorry, no results found!")
         context = {'prod':prod,'search_prod':search_prod}
@@ -59,4 +60,22 @@ def cart(request):
     return render(request, 'shop/cart.html')    
     
 def checkout(request):
+    if request.method == "POST":
+        itemsJson = request.POST.get('itemsJson')
+        amount = request.POST.get('amount')
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        address2 = request.POST.get('address2')
+        country = request.POST.get('country')
+        state = request.POST.get('state')
+        city = request.POST.get('city')
+        zip_code = request.POST.get('zip_code')
+        phone = request.POST.get('phone')
+        order = Order(items_json=itemsJson, amount=amount, name=name, address=address, address2=address2, 
+            country=country, state=state, city=city, zip_code=zip_code, phone=phone)
+        order.save()
+        thank = True
+        order_id = order.id
+        messages.success(request, f'Thanks for ordering with us. Your order id is {order_id}. Use it to track your order using our order tracker.')
+        return render(request, 'shop/checkout.html', {'thank':thank})
     return render(request, 'shop/checkout.html')
