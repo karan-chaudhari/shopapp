@@ -91,8 +91,8 @@
                     <button id="pr{{i.id}}" class="site-btn prodcart">Add to Cart</button>
                 </span>
                 {% elif fprod.id %}
-                <span id="divpr{{fprod.id}}" class="proddiv">
-                    <button id="pr{{fprod.id}}" class="site-btn prodcart">ADD TO CART</button>
+                <span id="divprod{{fprod.id}}" class="proddiv">
+                    <button id="prod{{fprod.id}}" class="site-btn prodcart">ADD TO CART</button>
                 </span>
                 {% endif %}
                 <a href="/shop/cart/"><button class="site-btn my-2">Go to cart</button></a>
@@ -195,7 +195,5 @@ function updateprodcart() {
     localStorage.setItem('cart', JSON.stringify(cart));
     document.getElementById('cart').innerHTML = Object.keys(cart).length;
 }
-
-document.getElementById('cart').innerHTML = Object.keys(cart).length;
 </script>
 {% endblock %}

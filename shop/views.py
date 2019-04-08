@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib import messages
-from .models import Product, Contact, Feature_Product, Order
+from .models import Product, Contact, Feature_Product, Order, OrderUpdate
 from math import ceil
+import json
 
 def index(request):    
     feat_prods = Feature_Product.objects.all()[::-1]
@@ -54,7 +55,23 @@ def search(request, cate=None):
         return render(request, 'shop/search.html',context)    
 
 def tracker(request):
-    return HttpResponse('Tracker')
+    if request.method == "POST":
+        order_id = request.POST.get('orderId')
+        phone = request.POST.get('phone')
+        try:
+            order = Order.objects.filter(id=order_id, phone=phone)
+            if len(order)>0:
+                update = OrderUpdate.objects.filter(OrderId=order_id)
+                updates = []
+                for item in update:
+                    updates.append({'text':item.update_desc,'time':item.timestamp})
+                    response = json.dumps({'status':'success','update':updates,'order':order[0].cartItem}, default=str)
+                return HttpResponse(response)
+            else:
+                return HttpResponse('{"status":"NoOrder"}')       
+        except Exception as e:
+            return HttpResponse('{"status":"error"}')
+    return render(request, 'shop/tracker.html')
 
 def cart(request):
     return render(request, 'shop/cart.html')    
@@ -62,6 +79,7 @@ def cart(request):
 def checkout(request):
     if request.method == "POST":
         itemsJson = request.POST.get('itemsJson')
+        cartItem = request.POST.get('cartItem')
         amount = request.POST.get('amount')
         name = request.POST.get('name')
         address = request.POST.get('address')
@@ -71,9 +89,11 @@ def checkout(request):
         city = request.POST.get('city')
         zip_code = request.POST.get('zip_code')
         phone = request.POST.get('phone')
-        order = Order(items_json=itemsJson, amount=amount, name=name, address=address, address2=address2, 
+        order = Order(items_json=itemsJson, cartItem=cartItem, amount=amount, name=name, address=address, address2=address2, 
             country=country, state=state, city=city, zip_code=zip_code, phone=phone)
         order.save()
+        update = OrderUpdate(OrderId=order.id, update_desc="The order has been placed")
+        update.save()
         thank = True
         order_id = order.id
         messages.success(request, f'Thanks for ordering with us. Your order id is {order_id}. Use it to track your order using our order tracker.')

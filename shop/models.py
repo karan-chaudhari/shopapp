@@ -35,6 +35,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     items_json = models.TextField(max_length=5000)
+    cartItem = models.CharField(max_length=5000, default="")
     amount = models.CharField(max_length=10, default="")
     name = models.CharField(max_length=50)
     address = models.TextField(max_length=200)
@@ -47,3 +48,12 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.id) + ". " + self.name
+
+class OrderUpdate(models.Model):
+    OrderId = models.CharField(max_length=50)
+    update_desc = models.CharField(max_length=5000) 
+    timestamp = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.OrderId)+ " . " + self.update_desc[0:10] + "...."
+        

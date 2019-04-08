@@ -59,6 +59,7 @@
                 <form class="checkout-form" method="post" action="/shop/checkout/">
                     {% csrf_token %}
                     <input type="hidden" name="itemsJson" id="itemsJson">
+                    <input type="hidden" name="cartItem" id="cartItem">
                     <input type="hidden" name="amount" id="amount">
                     <div class="cf-title">Billing Address</div>
                     <div class="row address-inputs">
@@ -119,6 +120,7 @@ for (var item in cart){
 }
 
 $('#itemsJson').val(JSON.stringify(checkoutcart)); 
+$('#cartItem').val(JSON.stringify(cart));
 {% if thank %}
 $('#emptycart').hide();
 $('#hidecart').hide();
@@ -127,7 +129,6 @@ localStorage.clear();
 {% endif %}
 
 document.getElementById('totalPrice').innerHTML = "₹" + totalPrice;
-document.getElementById('cart').innerHTML = Object.keys(cart).length;
 
 $('#amount').val($('#totalPrice').html());
 </script>

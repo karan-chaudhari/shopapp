@@ -1,0 +1,138 @@
+{% extends 'shop/layout.html' %}
+{% load static %}
+{% block title %}Tracker - Divisima{% endblock %}
+{% block content %}
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container section-title">
+        <h4>TRACK YOUR ORDER</h4>
+    </div>
+</div>
+<section class="checkout-section my-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 order-2 order-lg-1">
+                <form class="checkout-form" method="post" action="#" id="trackerForm">
+                    {% csrf_token %}
+                    <div class="cf-title">Order Details</div>
+                    <div class="row address-inputs">
+                        <div class="col-md-6">
+                            <input type="text" name="orderId" id="orderId" required placeholder="Order Id">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="phone" id="phone" required placeholder="Phone no.">
+                        </div>
+                    </div>
+                    <button class="site-btn">Track Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="noTracker" style="background: #fff;padding: 50px;text-align: center;">
+    <img src="{% static 'img/no-result.png' %}">
+    <div style="color: #878787;font-size: 20px;margin-bottom: 8px;">
+        Sorry, We are not able to track your order. Please enter correct Order Id & Phone number.
+    </div>
+</div>
+<div id="orderStatus">
+    <h2 class="text-center">YOUR ORDER STATUS</h2>
+    <section class="cart-section spad" id="hidecart">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="cart-table">
+                        <h3 class="text-center">Your Order</h3>
+                        <div class="cart-table-warp">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th class="product-th">Product</th>
+                                        <th class="quy-th">Quantity</th>
+                                        <th class="total-th">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orderItems">
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="total-cost">
+                            <h6>Amount <span id="amountPrice"></span></h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 card-right">
+                    <ul class="list-group" id="items">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Cras justo odio
+                            <span class="badge badge-primary badge-pill">3/4/2019</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+$('#noTracker').hide();
+$('#orderStatus').hide();
+
+$('#trackerForm').submit(function(event) {
+    $('#items').empty();
+    var formData = {
+        'orderId': $('input[name=orderId]').val(),
+        'phone': $('input[name=phone]').val(),
+        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+    };
+
+    $.ajax({
+            type: 'POST',
+            url: '/shop/tracker/',
+            data: formData,
+            encode: true
+        })
+
+        .done(function(data) {
+            $('#items').empty();
+            $('#orderItems').empty();
+            data = JSON.parse(data);
+            if (data['status'] == 'success') {
+                updates = data['update'];
+                $('#orderStatus').show();
+                $('#noTracker').hide();
+                for (i = 0; i < updates.length; i++) {
+                    var text = updates[i]['text'];
+                    var time = updates[i]['time'];
+                    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                        ${text}<span class="badge badge-primary badge-pill">${time}</span></li>`;
+                    $('#items').append(mystr);
+                }
+
+                cart = JSON.parse(data['order']);
+                var totalPrice = 0;
+                for (item in cart) {
+                    let name = cart[item][1];
+                    var qty = cart[item][0];
+                    var price = cart[item][2];
+                    let img = cart[item][3];
+                    let itemPrice = qty * price.slice(1, );
+                    totalPrice = totalPrice + (qty * price.slice(1, ));
+                    mystr = `<tr><td class="product-col"><div class='cart-detail-img'>${img}</div><div class="pc-title"><h4>${name}</h4><p>${price}</p></div></td><td class="quy-col text-center">${qty}</td><td class="total-col"><span id='update-price${item}'><h4>₹${itemPrice}</h4></span></td></tr>`;
+                    $('#orderItems').append(mystr);
+                }
+
+                document.getElementById('amountPrice').innerHTML = "₹" + totalPrice;
+            } 
+            else{
+                $('#noTracker').show();
+                $('#orderStatus').hide();
+            }
+
+        });
+
+    event.preventDefault();
+});
+</script>
+{% endblock %}
