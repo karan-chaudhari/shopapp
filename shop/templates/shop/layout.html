@@ -73,19 +73,10 @@
                 <!-- menu -->
                 <ul class="main-menu">
                     <li><a href="/">Home</a></li>
-                    <li><a href="#">Women</a>
-                        <ul class="sub-menu">
-                            <li><a href="#">Tops</a></li>
-                            <li><a href="#">Jumpsuits</a></li>
-                            <li><a href="#">Lingerie</a></li>
-                            <li><a href="#">Jeans</a></li>
-                            <li><a href="#">Dresses</a></li>
-                            <li><a href="#">Coats</a></li>
-                            <li><a href="#">Jumpers</a></li>
-                            <li><a href="#">Leggings</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Men</a>
+                    {% for i in cate %}
+                    <li><a href="/category/{{i}}">{{i}}</a></li>
+                    {% endfor %}
+                   <!--  <li><a href="#">Men</a>
                         <ul class="sub-menu">
                             <li><a href="#">Jeans</a></li>
                             <li><a href="#">Jackets</a></li>
@@ -102,7 +93,7 @@
                             <li><a href="#">Boots</a></li>
                             <li><a href="#">Flip Flops</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li><a href="/shop/tracker/">Tracker</a></li>
                     <li><a href="#">Blog</a></li>
                     <li><a href="/shop/about/">About</a></li>

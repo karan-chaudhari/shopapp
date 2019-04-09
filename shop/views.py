@@ -6,22 +6,27 @@ from .models import Product, Contact, Feature_Product, Order, OrderUpdate
 from math import ceil
 import json
 
+cateprod = Product.objects.values('cate')
+cates = {item['cate'] for item in cateprod}
+
 def index(request):    
     feat_prods = Feature_Product.objects.all()[::-1]
     allProd = []
-    cateprod = Product.objects.values('cate','id')
-    cates = {item['cate'] for item in cateprod}
     for cate in cates:
         prod = Product.objects.filter(cate=cate)[::-1]
         n = len(prod)
         nSlides = n//4 + ceil((n/4) - (n//4))
         allProd.append([prod, nSlides])
-    context = {'allProd':allProd, 'feat_prods':feat_prods}            
+    context = {'allProd':allProd, 'feat_prods':feat_prods, 'cate':cates}            
     return render(request, 'shop/index.html', context)
 
+def category(request, cate):
+    prod = Product.objects.filter(cate=cate)
+    context = {'cate':cates, 'prod':prod,'cate_name':cate}
+    return render(request, 'shop/category.html', context)
 
 def about(request):
-    return render(request, 'shop/about.html')
+    return render(request, 'shop/about.html', {'cate':cates})
 
 def contact(request):
     if request.method == "POST":
@@ -32,26 +37,29 @@ def contact(request):
         contact = Contact(name=name, email=email, phone=phone, msg=msg)
         contact.save()
         messages.success(request, 'Your details has been submitted. We will response you very soon. Thank you so much.')
-    return render(request, 'shop/contact.html') 
+    return render(request, 'shop/contact.html', {'cate':cates}) 
 
 def product(request, myid):
     product = Product.objects.filter(id=myid)
-    context = {'i':product[0]}
+    context = {'i':product[0],'cate':cates}
     return render(request, 'shop/product.html', context)
 
 def fea_product(request, myid):
     fprod = Feature_Product.objects.filter(id=myid)
-    context = {'fprod':fprod[0]}
+    context = {'fprod':fprod[0], 'cate':cates}
     return render(request, 'shop/product.html', context)
 
-def search(request, cate=None):
+def search(request):
     if 'search' in request.GET:
         search_prod = request.GET["search"]
-        prod = Product.objects.filter(Q(product_name__icontains=search_prod)|
-            Q(cate__icontains=search_prod)|Q(subcate__icontains=search_prod))     
+        cate = search_prod.capitalize()
+        prod = Product.objects.filter(cate=cate)
         if not prod:
-            messages.info(request,"Sorry, no results found!")
-        context = {'prod':prod,'search_prod':search_prod}
+            prod = Product.objects.filter(Q(product_name__icontains=search_prod)|
+                Q(cate__icontains=search_prod)|Q(subcate__icontains=search_prod))     
+            if not prod:
+                messages.info(request,"Sorry, no results found!")
+        context = {'prod':prod,'search_prod':search_prod, 'cate':cates}
         return render(request, 'shop/search.html',context)    
 
 def tracker(request):
@@ -71,10 +79,10 @@ def tracker(request):
                 return HttpResponse('{"status":"NoOrder"}')       
         except Exception as e:
             return HttpResponse('{"status":"error"}')
-    return render(request, 'shop/tracker.html')
+    return render(request, 'shop/tracker.html', {'cate':cates})
 
 def cart(request):
-    return render(request, 'shop/cart.html')    
+    return render(request, 'shop/cart.html', {'cate':cates})    
     
 def checkout(request):
     if request.method == "POST":
@@ -97,5 +105,5 @@ def checkout(request):
         thank = True
         order_id = order.id
         messages.success(request, f'Thanks for ordering with us. Your order id is {order_id}. Use it to track your order using our order tracker.')
-        return render(request, 'shop/checkout.html', {'thank':thank})
-    return render(request, 'shop/checkout.html')
+        return render(request, 'shop/checkout.html', {'thank':thank,'cate':cates})
+    return render(request, 'shop/checkout.html',{'cate':cates})

@@ -1,0 +1,33 @@
+{% extends 'shop/layout.html' %}
+{% load static %}
+{% block title %}{{cate_name}} - Divisima{% endblock %}
+{% block content %}
+
+<!-- Product filter section -->
+<section class="product-filter-section my-4">
+    <div class="container">
+        <div class="row">
+            {% for i in prod %}
+            <div class="col-lg-3 col-sm-6 my-2">
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <a target="_blank" href="/shop/product/{{i.id}}">
+                            <div id="imgpr{{i.id}}">
+                                <img src="{{i.img.url}}" height="300" width="300" alt="">
+                            </div>
+                        </a>
+                    </div>
+                    <div class="pi-text">
+                        <h6 id="pricepr{{i.id}}">{{i.price}}</h6>
+                        <a id="namepr{{i.id}}" target="_blank" href="/shop/product/{{i.id}}">
+                            <p>{{i.product_name}}</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    </div>
+</section>
+{% endblock %}
