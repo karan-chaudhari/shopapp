@@ -1,7 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib import messages
+from .forms import UserRegisterForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout, authenticate
 from .models import Product, Contact, Feature_Product, Order, OrderUpdate
 from math import ceil
 import json
@@ -107,3 +110,37 @@ def checkout(request):
         messages.success(request, f'Thanks for ordering with us. Your order id is {order_id}. Use it to track your order using our order tracker.')
         return render(request, 'shop/checkout.html', {'thank':thank,'cate':cates})
     return render(request, 'shop/checkout.html',{'cate':cates})
+
+def register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('/')
+        else:
+            for msg in form.error_messages:
+                messages.error(request, f'{form.error_messages[msg]}') 
+    form = UserCreationForm
+    context = {'cate':cates,'form':form}
+    return render(request, 'shop/register.html', context)  
+
+def login_user(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username,password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/')  
+        else:
+            messages.error(request, 'Invalid Username and Password')        
+    form = AuthenticationForm()
+    context = {'cate':cates,'form':form}
+    return render(request, 'shop/login.html', context)
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')

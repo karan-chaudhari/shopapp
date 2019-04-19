@@ -1,0 +1,42 @@
+{% extends 'shop/layout.html' %}
+{% load static %}
+{% block title %}Create Account - Divisima{% endblock %}
+{% block content %}
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container section-title">
+        <h4>Create Account</h4>
+    </div>
+</div>
+<!-- Page info end -->
+
+<!-- Contact section -->
+<section class="contact-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 contact-info">
+            </div>
+            <div class="col-lg-6">
+                {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <form class="contact-form" action="/shop/register/" method="post">
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <div class="text-center"><button class="site-btn">Create Account</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact section end -->
+{% endblock %}
