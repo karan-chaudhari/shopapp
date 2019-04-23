@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib import messages
-from .forms import UserRegisterForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .models import Product, Contact, Feature_Product, Order, OrderUpdate
+from .forms import UserRegisterForm
+from .models import Product, Contact, Feature_Product, Order, OrderUpdate, UserProfile
+from django.contrib.auth.models import User
 from math import ceil
 import json
 
@@ -113,15 +114,15 @@ def checkout(request):
 
 def register(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('/')
+            return redirect(f'/shop/profile/{user.id}')
         else:
             for msg in form.error_messages:
                 messages.error(request, f'{form.error_messages[msg]}') 
-    form = UserCreationForm
+    form = UserRegisterForm
     context = {'cate':cates,'form':form}
     return render(request, 'shop/register.html', context)  
 
@@ -134,7 +135,7 @@ def login_user(request):
             user = authenticate(username=username,password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/')  
+                return redirect(f'/shop/profile/{user.id}')  
         else:
             messages.error(request, 'Invalid Username and Password')        
     form = AuthenticationForm()
@@ -144,3 +145,64 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('/')
+
+def profile(request, id):      
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        username = request.POST.get('username')
+        name = request.POST.get('name')
+        email = request.POST.get('useremail')
+        address = request.POST.get('address')
+        country = request.POST.get('country')
+        state = request.POST.get('state')
+        city = request.POST.get('city')
+        zip_code = request.POST.get('zip_code')
+        phone = request.POST.get('phone')
+        profile = UserProfile(user_id=user_id, username=username, name=name, email=email,
+            address=address, country=country, state=state, city=city,zip_code=zip_code, phone=phone)
+        profile.save()
+    uprofile = UserProfile.objects.filter(user_id=id)
+    if uprofile:
+        context = {'cate':cates,'profile':uprofile[0]}
+    else:    
+        new_user = True
+        context = {'cate':cates, 'new_user':new_user}
+    return render(request, 'shop/profile.html', context)
+
+def update_profile(request, id):
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        username = request.POST.get('username')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        address = request.POST.get('address')
+        country = request.POST.get('country')
+        state = request.POST.get('state')
+        city = request.POST.get('city')
+        zip_code = request.POST.get('zip_code')
+        phone = request.POST.get('phone')
+
+        user = User.objects.filter(id=id)
+        user_info = user[0]
+        user_info.email = email
+        user_info.save()
+        
+        uprofile = UserProfile.objects.filter(user_id=id)
+        profile = uprofile[0]
+
+        profile.name = name
+        profile.email = email
+        profile.address = address
+        profile.country = country
+        profile.state = state
+        profile.city = city
+        profile.zip_code = zip_code
+        profile.phone = phone
+
+        profile.save()
+        messages.success(request, 'Your Profile Updated')
+        return redirect(f'/shop/profile/{id}')  
+
+    uprofile = UserProfile.objects.filter(user_id=id)
+    context = {'cate':cates,'profile':uprofile[0]}
+    return render(request, 'shop/update.html', context)

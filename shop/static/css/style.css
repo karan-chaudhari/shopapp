@@ -1925,7 +1925,7 @@ ol {
     color: #414141;
 }
 
-.checkout-form input[type=text] {
+.checkout-form input {
     width: 100%;
     height: 44px;
     border: none;

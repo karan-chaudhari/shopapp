@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/animate.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/mainstyle.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/popcart.css' %}" />
     <link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
     <!-- 
@@ -60,9 +60,9 @@
                                 <ul class="main-menu">
                                     <li>
                                         <i class="flaticon-profile"></i>
-                                        <a href="">{{user.username}}</a>
+                                        <a href="/shop/profile/{{user.id}}">{{user.username}}</a>
                                         <ul class="sub-menu" style="width: 130px;">
-                                            <li><a href="">Profile</a></li>
+                                            <li><a href="/shop/profile/{{user.id}}">Profile</a></li>
                                             <li><a href="">Order</a></li>
                                             <li><a href="/shop/logout/">Log Out</a></li>
                                         </ul>

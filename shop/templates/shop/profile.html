@@ -1,0 +1,91 @@
+{% extends 'shop/layout.html' %}
+{% block title %}{{user.username}} - Divisima{% endblock %}
+
+{% block content %}
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container section-title">
+        <h4>Your Profile</h4>
+    </div>
+</div>
+
+
+<!-- Page info end -->
+{% if profile.name %}
+<div class="container my-4">
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'success' %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <div class="jumbotron">
+        <h3>Your Detail</h3>
+        <hr>
+        <p class="lead">{{profile.name}}</p>
+        <p>{{profile.email}}</p>
+        <p>{{profile.phone}}</p>
+        <hr class="my-4">
+        <p>{{profile.address}}</p>
+        <p>{{profile.city}}, {{profile.state}}, {{profile.country}}</p>
+        <p>{{profile.zip_code}}</p>
+        <a class="btn btn-primary btn-lg" href="/shop/update/{{user.id}}" role="button">Update Profile</a>
+        <a class="btn btn-primary btn-lg" id="order_button" href="#" role="button">Place Order</a>
+    </div>
+</div>
+{% endif %}
+<!-- Contact section -->
+<section class="checkout-section my-4" id="orderAddress">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 order-2 order-lg-1">
+                <form class="checkout-form" method="post" action="/shop/profile/{{user.id}}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{user.id}}">
+                    <input type="hidden" name="username" value="{{user.username}}">
+                    <input type="hidden" name="useremail" value="{{user.email}}">
+                    <div class="cf-title">Billing Address</div>
+                    <div class="row address-inputs">
+                        <div class="col-md-12">
+                            <input type="text" name="name" required placeholder="Name">
+                            <input type="text" name="address" required placeholder="Address">
+                            <input type="text" name="country" required placeholder="Country">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="state" required placeholder="State">
+                            <input type="text" name="zip_code" required placeholder="Zip code">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" name="city" required placeholder="City">
+                            <input type="text" name="phone" required placeholder="Phone no.">
+                        </div>
+                    </div>
+                    <button class="site-btn submit-order-btn">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Contact section end -->
+{% endblock %}
+{% block js %}
+<script>
+    $('#order_button').hide();
+    $('#orderAddress').hide();
+    nitem = Object.keys(cart).length;
+    if (nitem !== 0) {
+        $('#order_button').show();
+        $('#orderAddress').show();
+        $('#update_btn').hide();
+    }
+    {% if new_user %}
+    $('#orderAddress').show();
+    {% endif %}
+</script>
+{% endblock %}

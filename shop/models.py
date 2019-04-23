@@ -57,3 +57,17 @@ class OrderUpdate(models.Model):
     def __str__(self):
         return str(self.OrderId)+ " . " + self.update_desc[0:10] + "...."
         
+class UserProfile(models.Model):
+    user_id = models.CharField(max_length=50)
+    username = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    address = models.TextField(max_length=500)
+    country = models.CharField(max_length=50)
+    state = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.user_id
