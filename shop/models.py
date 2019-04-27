@@ -34,12 +34,13 @@ class Product(models.Model):
         return self.product_name        
 
 class Order(models.Model):
+    user_id = models.CharField(max_length=50, default="")
     items_json = models.TextField(max_length=5000)
     cartItem = models.CharField(max_length=5000, default="")
     amount = models.CharField(max_length=10, default="")
     name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50, default="")
     address = models.TextField(max_length=200)
-    address2 = models.TextField(max_length=200)
     country = models.CharField(max_length=50)
     state = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -47,7 +48,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=20)
 
     def __str__(self):
-        return str(self.id) + ". " + self.name
+        return str(self.user_id) + ". " + self.name
 
 class OrderUpdate(models.Model):
     OrderId = models.CharField(max_length=50)
@@ -58,7 +59,7 @@ class OrderUpdate(models.Model):
         return str(self.OrderId)+ " . " + self.update_desc[0:10] + "...."
         
 class UserProfile(models.Model):
-    user_id = models.CharField(max_length=50)
+    user_id = models.CharField(max_length=50, unique=True)
     username = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)

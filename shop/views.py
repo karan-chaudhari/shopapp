@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
 from .models import Product, Contact, Feature_Product, Order, OrderUpdate, UserProfile
 from django.contrib.auth.models import User
@@ -87,29 +88,50 @@ def tracker(request):
 
 def cart(request):
     return render(request, 'shop/cart.html', {'cate':cates})    
-    
+
+@login_required(login_url='/shop/login/')
 def checkout(request):
     if request.method == "POST":
+        user_id = request.POST.get('user_id')
         itemsJson = request.POST.get('itemsJson')
         cartItem = request.POST.get('cartItem')
         amount = request.POST.get('amount')
         name = request.POST.get('name')
+        email = request.POST.get('email')
         address = request.POST.get('address')
-        address2 = request.POST.get('address2')
         country = request.POST.get('country')
         state = request.POST.get('state')
         city = request.POST.get('city')
         zip_code = request.POST.get('zip_code')
         phone = request.POST.get('phone')
-        order = Order(items_json=itemsJson, cartItem=cartItem, amount=amount, name=name, address=address, address2=address2, 
-            country=country, state=state, city=city, zip_code=zip_code, phone=phone)
-        order.save()
+
+        if (name and email):
+            order = Order(user_id=user_id, items_json=itemsJson, cartItem=cartItem, amount=amount, name=name, email=email, address=address, 
+                country=country, state=state, city=city, zip_code=zip_code, phone=phone)
+            order.save()
+
+        id = request.POST.get('userId')    
+
+        uprofile = UserProfile.objects.filter(user_id=id)
+
+        if uprofile:
+            profile = uprofile[0]              
+
+            itemsJson = request.POST.get('itemsJson1')
+            cartItem = request.POST.get('cartItem1')
+            amount = request.POST.get('amount1')
+
+            order = Order(user_id=id, items_json=itemsJson, cartItem=cartItem, amount=amount, name=profile.name, email=profile.email, address=profile.address, 
+                country=profile.country, state=profile.state, city=profile.city, zip_code=profile.zip_code, phone=profile.phone)
+            order.save()
+
         update = OrderUpdate(OrderId=order.id, update_desc="The order has been placed")
         update.save()
         thank = True
         order_id = order.id
         messages.success(request, f'Thanks for ordering with us. Your order id is {order_id}. Use it to track your order using our order tracker.')
         return render(request, 'shop/checkout.html', {'thank':thank,'cate':cates})
+
     return render(request, 'shop/checkout.html',{'cate':cates})
 
 def register(request):
