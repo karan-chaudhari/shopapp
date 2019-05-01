@@ -49,11 +49,6 @@ def product(request, myid):
     context = {'i':product[0],'cate':cates}
     return render(request, 'shop/product.html', context)
 
-def fea_product(request, myid):
-    fprod = Feature_Product.objects.filter(id=myid)
-    context = {'fprod':fprod[0], 'cate':cates}
-    return render(request, 'shop/product.html', context)
-
 def search(request):
     if 'search' in request.GET:
         search_prod = request.GET["search"]
@@ -85,6 +80,19 @@ def tracker(request):
         except Exception as e:
             return HttpResponse('{"status":"error"}')
     return render(request, 'shop/tracker.html', {'cate':cates})
+    
+def order_tracker(request, order_id):
+    order = Order.objects.filter(id=order_id)
+    if len(order)>0:
+        update = OrderUpdate.objects.filter(OrderId=order_id)
+        updates = []
+        for item in update:
+            time = item.timestamp
+            updates.append({'text':item.update_desc,'time':time.strftime("%d %b %Y, %I:%M %p")})
+            response = json.dumps({'update':updates}, default=str)
+        return HttpResponse(response)    
+    else:
+        return HttpResponse('Error')    
 
 def cart(request):
     return render(request, 'shop/cart.html', {'cate':cates})    
@@ -166,7 +174,7 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('/')
+    return redirect('/shop/login/')
 
 def profile(request, id):      
     if request.method == "POST":
@@ -228,3 +236,34 @@ def update_profile(request, id):
     uprofile = UserProfile.objects.filter(user_id=id)
     context = {'cate':cates,'profile':uprofile[0]}
     return render(request, 'shop/update.html', context)
+
+# def order(request, id):
+#     order = Order.objects.filter(user_id=id)
+#     if order:
+#         tem_data = []
+#         for i in order:
+#             data = json.loads(i.cartItem)
+#             tem_data.append([i,data])
+#         print(tem_data)    
+#     context = {'cate':cates,'data':tem_data}
+#     return render(request, 'shop/order.html', context)        
+
+def order(request, id):
+    order = Order.objects.filter(user_id=id)[::-1]
+    if order:
+        order_details = []
+        for i in order:
+            data = json.loads(i.cartItem)
+            prod_list = []
+            for key in data:
+                key_id = key[2:]
+                prod = Product.objects.filter(id=key_id)
+                prod_detail = prod[0]
+                qty = data[key][0:1]
+                prod_list.append([prod_detail,qty])
+            order_details.append([i,data,prod_list])  
+        context = {'cate':cates,'data':order_details}
+        return render(request, 'shop/order.html', context) 
+    else:
+        context = {'cate':cates}
+        return render(request, 'shop/order.html', context)

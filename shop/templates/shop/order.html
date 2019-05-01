@@ -1,0 +1,126 @@
+{% extends 'shop/layout.html' %}
+{% load static %}
+{% block title %}Your Order - Divisima{% endblock %}
+{% block content %}
+
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container section-title">
+        <h4>YOUR ORDER</h4>
+    </div>
+</div>
+<div class="container my-4">
+    {% if data %}
+    {% for i,item,img in data %}
+    <div class="card mb-3" style="max-width: 1147px;">
+        <h5 class="card-title" style="padding-left: 15px;padding-top: 15px; padding-right: 15px;">Order Id: {{i.id}}
+            <span class="float-right"><small>Order Placed : {{i.date|date:"d F Y"}}</small></span>
+        </h5>
+        <div class="row no-gutters">
+            <div class="col-md-5">
+                {% for i,item_qty in img %}
+                <div class="card mb-3" style="max-width: 540px; margin: 10px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="/media/{{i.img}}" class="card-img" style="width: 100%; height: 150px; padding: 15px;" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{i.product_name}}</h5>
+                                <p class="item-price">{{i.price}}</p>
+                                {% for qty in item_qty %}
+                                <p>Qty : {{qty}}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-4">
+                <div class="card-body">
+                    <p><legend>{{i.name}}</legend></p>
+                    <p><strong>{{i.phone}}</strong></p>
+                    <p>{{i.email}}</p>
+                    <p>{{i.address}}</p>
+                    <p>{{i.zip_code}}</p>
+                    <p>{{i.city}}, {{i.state}}, {{i.country}}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card-body">
+                <p><legend>Amount : {{i.amount}}</legend></p>
+                <button class="btn btn-primary" id="order_tracker{{i.id}}" style="width: 100%">
+                    Track Order
+                </button>
+            </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div style="background: #fff;padding: 50px;text-align: center;">
+        <img src="{% static 'img/no-result.png' %}">
+        <div style="font-size: 26px;font-weight: 500;margin: 20px 0 10px;"><b>
+                <h2>Sorry, No Order Found</h2>
+            </b></div>
+        <div style="color: #878787;font-size: 20px;margin-bottom: 8px;">
+            Looks like you have not made your order yet
+        </div>
+        <a href="/" class="site-btn sb-dark">Continue shopping</a>
+    </div>
+    {% endif %}
+</div>
+
+<div class="modal" id="modalDialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Order Id : <span id="orderId"></span></h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="update_id">
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+
+    {% for i,item,img in data %}
+    $('#order_tracker{{i.id}}').click(function(event){
+        $('#modalDialog').modal('show');
+        $('#update_id').empty();
+        document.getElementById('orderId').innerHTML = "{{i.id}}";
+        dataId = "{{i.id}}";
+
+        $.ajax({
+                type: 'GET',
+                url: '/shop/order_tracker/{{i.id}}',
+                data: dataId,
+                encode: true
+            })
+
+            .done(function(data){
+                data = JSON.parse(data);
+                if (data){
+                    updates = data['update'];
+                    for (var i=0; i<updates.length; i++){
+                        var text = updates[i]['text'];
+                        var time = updates[i]['time'];
+                        mystr = `<p>${time}<br>${text}</p><hr>`;
+                        $('#update_id').append(mystr);
+                    }
+                }
+            });
+
+        event.preventDefault();    
+
+    });
+    {% endfor %}
+</script>
+{% endblock %}

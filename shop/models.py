@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Contact(models.Model):
     name = models.CharField(max_length=80)
@@ -46,6 +47,7 @@ class Order(models.Model):
     city = models.CharField(max_length=50)
     zip_code = models.CharField(max_length=50)
     phone = models.CharField(max_length=20)
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return str(self.user_id) + ". " + self.name
@@ -53,7 +55,7 @@ class Order(models.Model):
 class OrderUpdate(models.Model):
     OrderId = models.CharField(max_length=50)
     update_desc = models.CharField(max_length=5000) 
-    timestamp = models.DateField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.OrderId)+ " . " + self.update_desc[0:10] + "...."
