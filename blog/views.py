@@ -13,3 +13,9 @@ def home(request):
 	posts = paginator.get_page(page)
 	context = {'posts':posts,'cate':cates}
 	return render(request, 'blog/home.html', context)
+
+def post(request, slug):
+	recent_post = Post.objects.all()[::-1][0:3]
+	post = Post.objects.filter(slug=slug)
+	context = {'post':post[0],'cate':cates,'recent_post':recent_post}
+	return render(request, 'blog/post.html', context)	

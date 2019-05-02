@@ -254,4 +254,4 @@ def order(request, id):
         return render(request, 'shop/order.html', context) 
     else:
         context = {'cate':cates}
-        return render(request, 'shop/order.html', context)
+        return render(request, 'shop/order.html', context)       
