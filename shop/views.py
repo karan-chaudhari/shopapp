@@ -137,8 +137,7 @@ def checkout(request):
         update.save()
         thank = True
         order_id = order.id
-        messages.success(request, f'Thanks for ordering with us. Your order id is {order_id}. Use it to track your order using our order tracker.')
-        return render(request, 'shop/checkout.html', {'thank':thank,'cate':cates})
+        return render(request, 'shop/checkout.html', {'thank':thank,'cate':cates,'order_id':order_id})
 
     return render(request, 'shop/checkout.html',{'cate':cates})
 
@@ -235,18 +234,7 @@ def update_profile(request, id):
 
     uprofile = UserProfile.objects.filter(user_id=id)
     context = {'cate':cates,'profile':uprofile[0]}
-    return render(request, 'shop/update.html', context)
-
-# def order(request, id):
-#     order = Order.objects.filter(user_id=id)
-#     if order:
-#         tem_data = []
-#         for i in order:
-#             data = json.loads(i.cartItem)
-#             tem_data.append([i,data])
-#         print(tem_data)    
-#     context = {'cate':cates,'data':tem_data}
-#     return render(request, 'shop/order.html', context)        
+    return render(request, 'shop/update.html', context)       
 
 def order(request, id):
     order = Order.objects.filter(user_id=id)[::-1]
