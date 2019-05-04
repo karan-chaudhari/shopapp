@@ -1,16 +1,56 @@
 {% extends 'shop/layout.html' %}
 {% load static %}
 {% load humanize %}
+{% block title %}{{post.title}}{% endblock %}
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/comment.css' %}" />{% endblock %}
 {% block content %}
 <main role="main" class="container my-4">
     <div class="row">
         <div class="col-md-8 blog-main">
             <div class="blog-post">
                 <h2 class="blog-post-title">{{post.title}}</h2>
-                <p class="blog-post-meta">{{post.timestamp|naturaltime}}</p>
+                <p class="blog-post-meta">{{time}}</p>
                 <img src="{{post.img.url}}">
                 <p style="white-space: pre-line; margin-top: 15px;">{{post.content}}</p>
             </div><!-- /.blog-post -->
+            <hr>
+            {% if cmnt_len %}
+            <h3>(<span id="cmnt_length">{{cmnt_len}}</span>) Comment:</h3>
+            {% else %}
+            <h3>(<span id="cmnt_length">0</span>) Comment:</h3>
+            {% endif %}
+            <div class="media">
+                <div class="media-body" id="comment_text">
+                    {% for i,time in comment %}
+                    <h5 class="mt-0"><strong>{{i.username}}</strong><span class="date sub-text mx-2">Commented {{time}}</span></h5>
+                    <p>{{i.cmnt}}</p>
+                    <hr>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="detailBox">
+                <div class="titleBox">
+                  {% if user.is_authenticated %}
+                    <label>Comment as {{user.username}}</label>
+                  {% else %} 
+                    <label>Comment as Guest</label> 
+                  {% endif %}
+                </div>
+                <div class="actionBox">
+                    <form class="checkout-form" id="comment_form" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="username" value="{{user.username}}">
+                        {% if not user.is_authenticated %}
+                        <input type="text" name="name" placeholder="Your name" required id="name">
+                        {% endif %}
+                        <input type="text" placeholder="Your Comment" required name="cmnt" id="cmnt">
+                        <button class="btn btn-primary" style="width: 100px;">Publish</button>
+                    </form>
+                </div>
+            </div>
+           
         </div><!-- /.blog-main -->
         <aside class="col-md-4 blog-sidebar">
             <div class="p-4 mb-3 bg-light rounded">
@@ -22,46 +62,61 @@
                 <h4 class="font-italic">Recent Posts</h4>
                 {% for i in recent_post %}
                 <a href="/blog/post/{{i.slug}}">
-                    <div class="card mb-3" style="max-width: 540px; padding: 10px;">
-                        <div class="row no-gutters">
-                            <div class="col-md-4">
-                                <img src="{{i.img.url}}" class="card-img" alt="...">
-                            </div>
-                            <div class="col-md-8" style="padding-left:10px;">
-                                <p>{{i.title}}</p>
-                            </div>
+                    <div class="card" style="width: 100%; margin: 10px;">
+                        <img src="{{i.img.url}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <p class="card-text">{{i.title}}</p>
                         </div>
                     </div>
                 </a>
                 {% endfor %}
             </div>
             {% endif %}
-            <div class="p-4">
-                <h4 class="font-italic">Archives</h4>
-                <ol class="list-unstyled mb-0">
-                    <li><a href="#">March 2014</a></li>
-                    <li><a href="#">February 2014</a></li>
-                    <li><a href="#">January 2014</a></li>
-                    <li><a href="#">December 2013</a></li>
-                    <li><a href="#">November 2013</a></li>
-                    <li><a href="#">October 2013</a></li>
-                    <li><a href="#">September 2013</a></li>
-                    <li><a href="#">August 2013</a></li>
-                    <li><a href="#">July 2013</a></li>
-                    <li><a href="#">June 2013</a></li>
-                    <li><a href="#">May 2013</a></li>
-                    <li><a href="#">April 2013</a></li>
-                </ol>
-            </div>
-            <div class="p-4">
-                <h4 class="font-italic">Elsewhere</h4>
-                <ol class="list-unstyled">
-                    <li><a href="#">GitHub</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">Facebook</a></li>
-                </ol>
-            </div>
         </aside><!-- /.blog-sidebar -->
     </div><!-- /.row -->
 </main><!-- /.container -->
+{% endblock %}
+{% block js %}
+<script>
+$('#comment_form').submit(function(event) {
+    $('#comment_list').empty();
+    var formdata = {
+        'name': $('input[name=name]').val(),
+        'username': $('input[name=username]').val(),
+        'cmnt': $('input[name=cmnt]').val(),
+        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+    };
+
+    $.ajax({
+            type: 'POST',
+            url: '/blog/comment/{{post.slug}}',
+            data: formdata,
+            encode: true
+        })
+
+        .done(function(data) {
+            data = JSON.parse(data);
+            console.log(data);
+            $('#comment_text').empty();
+            if (data['usercmnt']) {
+                cmntData = data['usercmnt'];
+                for (var i = 0; i < cmntData.length; i++) {
+                    var username = cmntData[i]['username'];
+                    var cmnt = cmntData[i]['cmnt'];
+                    var timestamp = cmntData[i]['timestamp'];
+                    var cmnt_len = cmntData[i]['cmnt_len'];
+                    mystr = `<h5 class="mt-0"><strong>${username}</strong><span class="date sub-text mx-2">Commented ${timestamp}</span></h5><p>${cmnt}</p><hr>`;
+                    $('#comment_text').append(mystr);
+                    // 
+                }
+                $('#name').val('');
+                $('#cmnt').val('');
+                var len = cmntData[0]['cmnt_len'];
+                document.getElementById('cmnt_length').innerHTML = len;
+            }
+        });
+
+    event.preventDefault();
+});
+</script>
 {% endblock %}

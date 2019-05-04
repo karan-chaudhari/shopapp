@@ -72,7 +72,8 @@ def tracker(request):
                 update = OrderUpdate.objects.filter(OrderId=order_id)
                 updates = []
                 for item in update:
-                    updates.append({'text':item.update_desc,'time':item.timestamp})
+                    time = item.timestamp
+                    updates.append({'text':item.update_desc,'time':time.strftime("%d %b %Y, %I:%M %p")})
                     response = json.dumps({'status':'success','update':updates,'order':order[0].cartItem}, default=str)
                 return HttpResponse(response)
             else:
