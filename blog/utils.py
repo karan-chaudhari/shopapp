@@ -2,6 +2,7 @@ from datetime import datetime
 from math import floor  
 
 def naturalDayTime(time):
+    """Return the timestamp like just now, days ago, months ago, years ago, etc."""
     now = datetime.now()    
     if type(time) is int:
         diff = now - datetime.fromtimestamp(time)

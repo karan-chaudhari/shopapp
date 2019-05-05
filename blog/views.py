@@ -10,6 +10,7 @@ cateprod = Product.objects.values('cate')
 cates = {item['cate'] for item in cateprod}
 
 def home(request):
+	"""Show the all blog post on blog page"""
 	post = Post.objects.all()[::-1]
 	post_detail = []
 	for i in post:
@@ -22,6 +23,7 @@ def home(request):
 	return render(request, 'blog/home.html', context)
 
 def post(request, slug):
+	"""Show the post on post page"""
 	recent_post = Post.objects.all()[::-1][0:3]
 	post = Post.objects.filter(slug=slug)
 	time = naturalDayTime(post[0].timestamp)
@@ -37,6 +39,7 @@ def post(request, slug):
 		return render(request, 'blog/post.html', context)	
 
 def comment(request, slug):
+	"""Comment on blog post"""
 	if request.method == "POST":
 		username = request.POST.get('username')
 		cmnt = request.POST.get('cmnt')	

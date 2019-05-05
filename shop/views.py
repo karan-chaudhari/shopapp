@@ -14,7 +14,8 @@ import json
 cateprod = Product.objects.values('cate')
 cates = {item['cate'] for item in cateprod}
 
-def index(request):    
+def index(request):   
+    """Fetch the all product from database and show the product category wise on home page""" 
     feat_prods = Feature_Product.objects.all()[::-1]
     allProd = []
     for cate in cates:
@@ -26,14 +27,17 @@ def index(request):
     return render(request, 'shop/index.html', context)
 
 def category(request, cate):
+    """Show the product category wise"""
     prod = Product.objects.filter(cate=cate)
     context = {'cate':cates, 'prod':prod,'cate_name':cate}
     return render(request, 'shop/category.html', context)
 
 def about(request):
+    """About page of shopapp"""
     return render(request, 'shop/about.html', {'cate':cates})
 
 def contact(request):
+    """Contact page of shopapp"""
     if request.method == "POST":
         name = request.POST.get('name')
         email = request.POST.get('email')
@@ -45,11 +49,13 @@ def contact(request):
     return render(request, 'shop/contact.html', {'cate':cates}) 
 
 def product(request, myid):
+    """Show the product detail on Product page"""
     product = Product.objects.filter(id=myid)
     context = {'i':product[0],'cate':cates}
     return render(request, 'shop/product.html', context)
 
 def search(request):
+    """Search the product"""
     if 'search' in request.GET:
         search_prod = request.GET["search"]
         cate = search_prod.capitalize()
@@ -63,6 +69,7 @@ def search(request):
         return render(request, 'shop/search.html',context)    
 
 def tracker(request):
+    """Track the order using Id and phone number in Tracker page"""
     if request.method == "POST":
         order_id = request.POST.get('orderId')
         phone = request.POST.get('phone')
@@ -83,6 +90,7 @@ def tracker(request):
     return render(request, 'shop/tracker.html', {'cate':cates})
     
 def order_tracker(request, order_id):
+    """Order tracker in user order page"""
     order = Order.objects.filter(id=order_id)
     if len(order)>0:
         update = OrderUpdate.objects.filter(OrderId=order_id)
@@ -96,10 +104,12 @@ def order_tracker(request, order_id):
         return HttpResponse('Error')    
 
 def cart(request):
+    """Show the product in cart"""
     return render(request, 'shop/cart.html', {'cate':cates})    
 
 @login_required(login_url='/shop/login/')
 def checkout(request):
+    """Place the order in checkout page"""
     if request.method == "POST":
         user_id = request.POST.get('user_id')
         itemsJson = request.POST.get('itemsJson')
@@ -143,6 +153,7 @@ def checkout(request):
     return render(request, 'shop/checkout.html',{'cate':cates})
 
 def register(request):
+    """User create the account in shopapp for place the order"""
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -157,6 +168,7 @@ def register(request):
     return render(request, 'shop/register.html', context)  
 
 def login_user(request):
+    """User can login using username and password"""
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -173,10 +185,12 @@ def login_user(request):
     return render(request, 'shop/login.html', context)
 
 def logout_user(request):
+    """User logout function"""
     logout(request)
     return redirect('/shop/login/')
 
-def profile(request, id):      
+def profile(request, id):  
+    """Show the user profile detail and user can add the profile details"""    
     if request.method == "POST":
         user_id = request.POST.get('user_id')
         username = request.POST.get('username')
@@ -200,6 +214,7 @@ def profile(request, id):
     return render(request, 'shop/profile.html', context)
 
 def update_profile(request, id):
+    """User update the profile details"""
     if request.method == "POST":
         user_id = request.POST.get('user_id')
         username = request.POST.get('username')
@@ -238,6 +253,7 @@ def update_profile(request, id):
     return render(request, 'shop/update.html', context)       
 
 def order(request, id):
+    """Show the order details in user order page"""
     order = Order.objects.filter(user_id=id)[::-1]
     if order:
         order_details = []
