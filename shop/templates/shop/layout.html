@@ -56,7 +56,7 @@
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
                             {% if user.is_authenticated %}
-                            <div class="up-item">
+                             <div class="up-item">
                                 <ul class="main-menu">
                                     <li>
                                         <i class="flaticon-profile"></i>
@@ -69,12 +69,13 @@
                                     </li>
                                 </ul>
                             </div>
-                            {% else %}
+                            {% else %} 
                             <div class="up-item">
                                 <i class="flaticon-profile"></i>
                                 <a href="/shop/login/">Log In</a> or <a href="/shop/register/">Create Account</a>
                             </div>
                             {% endif %}
+
                             <div class="up-item">
                                 <div class="shopping-card">
                                     <i class="flaticon-bag"></i>
@@ -135,7 +136,7 @@
                             <li><a href="">Shipping</a></li>
                         </ul>
                         <ul>
-                            <li><a href="">Blog</a></li>
+                            <li><a href="/blog/">Blog</a></li>
                             <li><a href="">Partners</a></li>
                             <li><a href="">Bloggers</a></li>
                             <li><a href="">Support</a></li>
@@ -202,12 +203,16 @@
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
     <script>
+        {% if success %}
+        localStorage.clear();
+        {% else %}
         if (localStorage.getItem('cart') == null) {
             var cart = {};
         } else {
             cart = JSON.parse(localStorage.getItem('cart'));
         }
         document.getElementById('cart').innerHTML = Object.keys(cart).length;
+        {% endif %}
     </script>
     {% block js %}
     {% endblock %}

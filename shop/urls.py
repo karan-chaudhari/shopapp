@@ -18,4 +18,5 @@ urlpatterns = [
     path('profile/<int:id>', views.profile, name='profile'),
     path('update/<int:id>', views.update_profile, name='update'),
     path('order/<int:id>', views.order, name='order'),
+    path('handlerequest/<int:id>', views.handlerequest, name='HandleRequest'),
 ]

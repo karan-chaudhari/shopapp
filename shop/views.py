@@ -2,17 +2,21 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db.models import Q
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm
+from django.views.decorators.csrf import csrf_exempt
 from .models import Product, Contact, Feature_Product, Order, OrderUpdate, UserProfile
-from django.contrib.auth.models import User
+from PayTm import Checksum
 from math import ceil
 import json
 
 cateprod = Product.objects.values('cate')
 cates = {item['cate'] for item in cateprod}
+
+MERCHANT_KEY = 'Your Merchant KEY'
 
 def index(request):   
     """Fetch the all product from database and show the product category wise on home page""" 
@@ -146,9 +150,29 @@ def checkout(request):
 
         update = OrderUpdate(OrderId=order.id, update_desc="The order has been placed")
         update.save()
-        thank = True
+
         order_id = order.id
-        return render(request, 'shop/checkout.html', {'thank':thank,'cate':cates,'order_id':order_id})
+        if uprofile:
+            profile = uprofile[0]    
+            cust_email = profile.email
+        else:
+            cust_email = email    
+
+        # paytm request for accept order payment
+        
+        param_dict = {
+            'MID':'Your Merchant ID',
+            'ORDER_ID':str(order_id),
+            'TXN_AMOUNT':str(amount[1:]),
+            'CUST_ID':cust_email,
+            'INDUSTRY_TYPE_ID':'Retail',
+            'WEBSITE':'WEBSTAGING',
+            'CHANNEL_ID':'WEB',
+            'CALLBACK_URL':f'http://127.0.0.1:8000/shop/handlerequest/{id}',
+        }        
+        param_dict['CHECKSUMHASH'] = Checksum.generate_checksum(param_dict, MERCHANT_KEY)
+
+        return render(request, 'shop/paytm.html', {'param_dict':param_dict})
 
     return render(request, 'shop/checkout.html',{'cate':cates})
 
@@ -272,3 +296,25 @@ def order(request, id):
     else:
         context = {'cate':cates}
         return render(request, 'shop/order.html', context)       
+
+@csrf_exempt
+def handlerequest(request,id):
+    user = User.objects.filter(id=id)
+    user.is_authenticated = True
+    form = request.POST
+    response_dict = {}
+    for i in form.keys():
+        response_dict[i] = form[i]
+        if i == "CHECKSUMHASH":
+            checksum = form[i]
+
+    verify = Checksum.verify_checksum(response_dict, MERCHANT_KEY, checksum)
+    if verify:
+        if response_dict['RESPCODE'] == '01':
+            success = True
+            return render(request, 'shop/paymentsuccess.html', {'response': response_dict,'cate':cates,
+                'user':user[0],'user.is_authenticated':user.is_authenticated,'success':success})
+        else:
+            msg = 'Order was not successful because ' + response_dict['RESPMSG']
+            return render(request, 'shop/paymentsuccess.html', {'response': response_dict,'cate':cates,
+                'user':user[0],'user.is_authenticated':user.is_authenticated,'msg':msg})

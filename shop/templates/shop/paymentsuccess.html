@@ -1,0 +1,22 @@
+{% extends 'shop/layout.html' %}
+{% load static %}
+{% block title %}Payment Status - Divisima{% endblock %}
+{% block content %}
+    <div class="page-top-info">
+        <div class="container section-title">
+            <h4>Payment Status</h4>
+        </div>
+    </div>
+    <div class="container my-4">
+        <div class="text-center">
+            {% if response.RESPCODE == '01' %}
+            <img src="{% static 'img/success-icon1.png' %}" height="300">
+            <h3 class="my-4">Thank You for Your Order</h3>
+            <h4 class="my-4">Your order id is {{response.ORDERID}}. Use it to track your order using our order tracker.</h4>
+            {% endif %}
+            {% if msg %}
+            <h2>{{msg}}</h2>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
