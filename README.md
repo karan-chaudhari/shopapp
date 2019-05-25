@@ -36,6 +36,8 @@ Order details in User Account
 Order Tracker
 Order Track in User Account
 
+Payment Gateway Integration(Debit Card, Credit Card, Net Banking, PayTm)
+
 Blog Post.
 Comment on post.
 Contact feature.
@@ -48,6 +50,7 @@ Contact feature.
 * [jQuery](https://jquery.com/) - Frontend Javascript library
 * [jQuery-Ajax](http://api.jquery.com/jquery.ajax/)
 * [Bootstrap](https://getbootstrap.com/) - Frontend Framework
+* [PayTM](https://developer.paytm.com/docs) - PayTm Payment Gateway Integration
 * JavaScript- Client-Side Script language
 
 ## Authors
